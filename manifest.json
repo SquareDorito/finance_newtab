@@ -1,9 +1,14 @@
 {
+    "manifest_version": 2,
     "name": "Ken's Custom New-Tab",
     "description": "A minimalistic custom new-tab page built by Ken and for Ken.",
     "version": "1.0.0",
     "permissions" : ["management"],
     "chrome_url_overrides" : {
         "newtab": "newtab.html"
-    }
+    },
+    "web_accessible_resources": [
+        "newtab.css"
+    ],
+    "content_security_policy": "script-src 'self' https://ajax.googleapis.com; object-src 'self'"
  }
