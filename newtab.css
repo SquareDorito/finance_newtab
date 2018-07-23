@@ -20,7 +20,7 @@ h1{
 .left-container{
     position:absolute;
     top:40%;
-    left:25%;
+    left:50%;
     transform: translate(-50%, -50%);
     color:rgba(255, 255, 255, 0.75);
     padding:10px;
@@ -29,7 +29,8 @@ h1{
 .right-container{
     position:absolute;
     top:20%;
-    left:55%;
+    left:67%;
+    width:50%;
     transform: translate(-50%, -50%);
     color:rgba(255, 255, 255, 0.75);
     padding:10px;
@@ -37,11 +38,24 @@ h1{
 
 .time{
     font-size:25px;
-    margin-bottom:10px;
+    margin-bottom:20px;
+    display:none;
+}
+
+#hello{
+    display:none;
+    text-decoration: none;
 }
 
 .age{
     font-size:25px;
+    margin-bottom:20px;
+    display:none;
+}
+
+.fact{
+    font-size:25px;
+    display:none;
 }
 
 strong{

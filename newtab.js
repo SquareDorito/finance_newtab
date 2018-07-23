@@ -14,6 +14,12 @@ function formatDate(date) {
     var monthIndex = date.getMonth();
     var year = date.getFullYear();
 
+    var realmonth = monthIndex + 1
+
+    $.get('http://numbersapi.com/' + realmonth.toString() + '/' + day.toString(), function (data) {
+        $('#fact').html("<strong>Today's Fun Fact</strong>: " + data);
+    });
+
     return monthNames[monthIndex] + ' ' + day + ', ' + year;
 }
 
@@ -24,14 +30,26 @@ function age() {
     var now = new Date();
     var age = now.getTime() - start.getTime();
     var year = (age / 31556926000); // seconds in a year * 1000
-    $('#age').html("You are "+"<strong>"+year.toFixed(9)+"</strong> years old.");
+    $('#age').html("You are " + "<strong>" + year.toFixed(9) + "</strong> years old.");
 }
 
 var getAllCallback = function (list) {
     timer = setInterval(age, 1);
     $("#time").empty()
-    var date = "Todays Date: <strong>" + formatDate(new Date())+"</strong>.";
-    $("#time").append(date)
+    var date = "Todays Date: <strong>" + formatDate(new Date()) + "</strong>.";
+    $("#time").append(date);
+    $("#hello").fadeIn("slow", function () {
+        // Animation complete
+    });
+    $("#time").fadeIn("slow", function () {
+        // Animation complete
+    });
+    $("#age").fadeIn("slow", function () {
+        // Animation complete
+    });
+    $("#fact").fadeIn("slow", function () {
+        // Animation complete
+    });
 
     var apps = document.getElementById("apps");
     for (var i in list) {
