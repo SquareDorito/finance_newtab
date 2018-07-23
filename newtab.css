@@ -18,29 +18,36 @@ h1{
 }
 
 .class-list{
+    padding: 0;
     list-style-type: none;
 }
 
 .class-row{
     font-size:20px;
+    margin-bottom:20px;
 }
 
 .left-container{
     position:absolute;
     top:40%;
-    left:15%;
-    transform: translate(-15%, -50%);
+    left:30%;
+    transform: translate(-50%, -50%);
     width:40%;
     color:rgba(255, 255, 255, 0.75);
     padding:10px;
 }
 
+.class-code{
+    font-size:25px;
+    color:white;
+}
+
 .right-container{
     position:absolute;
     top:20%;
-    left:65%;
+    left:76%;
     width:40%;
-    transform: translate(-30%, -50%);
+    transform: translate(-50%, -0%);
     color:rgba(255, 255, 255, 0.75);
     padding:10px;
 }

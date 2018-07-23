@@ -34,8 +34,12 @@ function age() {
 }
 
 function setClasses(classes){
-    console.log(classes['classes']);
-    
+    classes=classes['classes'];
+    console.log(classes.length)
+    for(var i=0;i<classes.length;i++){
+        console.log(classes[i][0]);
+        $('#class-list').append('<li class="class-row"><span class="class-code">'+classes[i][0]+'</span> - '+classes[i][1]+'</li>')
+    }
 }
 
 var getAllCallback = function (list) {
