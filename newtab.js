@@ -51,12 +51,23 @@ var getAllCallback = function (list) {
         // Animation complete
     });
 
+    /*$.post("http://127.0.0.1:5000/classes", { name: "John", time: "2pm" })
+        .done(function (data) {
+            alert("Data Loaded: " + data);
+        });*/
+
     $.ajax({
+        url: "http://127.0.0.1:5000/classes",
         type: "POST",
-        url: "sibboleth.py",
-        data: { param: text}
-    }).done(function( o ) {
-        // do something
+        data: JSON.stringify({
+            'username': "knoh1",
+            'password': "Kyunghyun12!"
+        }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+            console.log(data);
+        }
     });
 
     /*var apps = document.getElementById("apps");
@@ -87,6 +98,7 @@ var getAllCallback = function (list) {
     }*/
 };
 
+/*
 var find128Image = function (icons) {
     for (var icon in icons) {
         if (icons[icon].size == "128") {
@@ -101,4 +113,4 @@ img.addEventListener("click", (function (ext) {
     return function () {
         chrome.management.launchApp(ext.id);
     };
-})(extInf));
+})(extInf));*/

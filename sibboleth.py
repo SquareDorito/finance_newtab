@@ -118,22 +118,23 @@ class SibbolethLogger():
         #     print("Element exists")
 
         self.courses = []
-        for course in self.driver.find_elements_by_css_selector('.course-bar'):
+        for i,course in enumerate(self.driver.find_elements_by_css_selector('.course-bar')):
             try:
                 try:
                     #course_code = course.driver.find_elements_by_css_selector('.course-left').driver.find_elements_by_css_selector('.course-code')
                     course_code = course.find_element_by_css_selector('.course-code').text
                 except:
-                    print("Failed to retrieve course code...")
+                    print("ERROR: "+"Course "+str(i)+" - Failed to retrieve course code.")
                 try:
                     #course_title = course.driver.find_elements_by_css_selector('.course-right').driver.find_elements_by_css_selector('.course-title')
                     course_title = course.find_element_by_css_selector('.course-title').text
                 except:
-                    print("Failed to retrieve course title...")
-                print(course_code, course_title)
+                    print("ERROR: "+"Course "+str(i)+" - Failed to retrieve course title.")
+                if VERBOSE_FLAG:
+                    print(course_code, course_title)
                 self.courses.append((course_code,course_title))
             except:
                 self.driver.quit()
         #print(courses)
-
         self.driver.quit()
+        return self.courses
