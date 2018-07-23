@@ -1,0 +1,9 @@
+{
+    "name": "Ken's Custom New-Tab",
+    "description": "A minimalistic custom new-tab page built by Ken and for Ken.",
+    "version": "1.0.0",
+    "permissions" : ["management"],
+    "chrome_url_overrides" : {
+        "newtab": "newtab.html"
+    }
+ }
