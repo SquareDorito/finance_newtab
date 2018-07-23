@@ -51,7 +51,15 @@ var getAllCallback = function (list) {
         // Animation complete
     });
 
-    var apps = document.getElementById("apps");
+    $.ajax({
+        type: "POST",
+        url: "sibboleth.py",
+        data: { param: text}
+    }).done(function( o ) {
+        // do something
+    });
+
+    /*var apps = document.getElementById("apps");
     for (var i in list) {
         // we don't want to do anything with extensions yet.
         var extInf = list[i];
@@ -76,7 +84,7 @@ var getAllCallback = function (list) {
             app.appendChild(name);
             apps.appendChild(app);
         }
-    }
+    }*/
 };
 
 var find128Image = function (icons) {
