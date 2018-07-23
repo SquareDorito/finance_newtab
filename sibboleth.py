@@ -4,6 +4,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 import time
 
 DEBUG_FLAG=0
@@ -34,8 +35,10 @@ try:
 except:
     flag=1
 
+print(flag)
+
 if flag==0:
-    print("Switchinig to signin pop-up window.")
+    print("Switching to signin pop-up window.")
     signin_window_handle = None
     while not signin_window_handle:
         for handle in driver.window_handles:
@@ -50,7 +53,13 @@ if flag==0:
         print("Sending keys...")
         driver.find_element_by_id('username').send_keys("knoh1")
         driver.find_element_by_id('password').send_keys("Kyunghyun12!")
-        driver.find_element_by_id('login').submit()
+        driver.find_element_by_name('_eventId_proceed').click()
+        while(True):
+            try:
+                driver.switch_to.window(signin_window_handle)
+            except:
+                break
+                
     except:
         print("Error logging into Sibboleth form.")
         driver.quit()
@@ -71,31 +80,38 @@ if DEBUG_FLAG==1:
 
 try:
     mycart_button.click()
+    #mycart_button.sendKeys(Keys.RETURN)
+    #mycart_button.sendKeys(Keys.ENTER)
     print("My primary cart button successfully clicked.")
-    time.sleep(1.0)
+    time.sleep(3.0)
 except:
     print("'MY PRIMARY CART' unable to be clicked...")
     driver.quit()
 
-try:
-    element = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.CLASS_NAME, "course-group"))
-    )
-    print("found!")
-finally:
-    driver.quit()
+print(driver.find_elements_by_css_selector('[data-action="register"]'))
+
+# try:
+#     element = WebDriverWait(driver, 10).until(
+#         EC.presence_of_element_located((By.CLASS_NAME, "panel-body"))
+#     )
+#     print("found!")
+# finally:
+#     driver.quit()
 
 # if driver.find_elements_by_css_selector('.panel-active [data-kind="results"]'):
 #     print("Element exists")
 
 courses = []
 for course in driver.find_elements_by_css_selector('.course-group'):
-    print("hello")
-    course_info = course.find_element_by_xpath('.//div[@class="course-code"]/a').text
-    print(course_info)
-    courses.append(course_info)
+    try:
+        print("hello")
+        course_info = course.find_element_by_xpath('.//div[@class="course-code"]/a').text
+        print(course_info)
+        courses.append(course_info)
+    except:
+        driver.quit()
+#print(courses)
 
-print(courses)
 driver.quit()
 
 # driver.find_element_by_id('formMenu:linknotes1').click()
