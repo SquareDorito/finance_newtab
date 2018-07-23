@@ -33,7 +33,39 @@ function age() {
     $('#age').html("You are " + "<strong>" + year.toFixed(9) + "</strong> years old.");
 }
 
+function setClasses(classes){
+    console.log(classes['classes']);
+    
+}
+
 var getAllCallback = function (list) {
+    var classes;
+    chrome.storage.sync.get("classes", function (items) {
+        if (Object.keys(items).length==0) {
+            $.ajax({
+                url: "http://127.0.0.1:5000/classes",
+                type: "POST",
+                data: JSON.stringify({
+                    'username': "knoh1",
+                    'password': "Kyunghyun12!"
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    chrome.storage.sync.set({ "classes": data }, function () {
+                        console.log("Class data stored in Google Chrome Storage.");
+                        setClasses(data);
+                    });
+                }
+            });
+        }else{
+            chrome.storage.sync.get("classes", function (items) {
+                setClasses(items);
+            });
+        }
+    });
+
+    
     timer = setInterval(age, 1);
     $("#time").empty()
     var date = "Todays Date: <strong>" + formatDate(new Date()) + "</strong>.";
@@ -55,20 +87,6 @@ var getAllCallback = function (list) {
         .done(function (data) {
             alert("Data Loaded: " + data);
         });*/
-
-    $.ajax({
-        url: "http://127.0.0.1:5000/classes",
-        type: "POST",
-        data: JSON.stringify({
-            'username': "knoh1",
-            'password': "Kyunghyun12!"
-        }),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (data) {
-            console.log(data);
-        }
-    });
 
     /*var apps = document.getElementById("apps");
     for (var i in list) {

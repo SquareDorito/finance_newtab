@@ -17,11 +17,20 @@ h1{
     color:white;
 }
 
+.class-list{
+    list-style-type: none;
+}
+
+.class-row{
+    font-size:20px;
+}
+
 .left-container{
     position:absolute;
     top:40%;
-    left:50%;
-    transform: translate(-50%, -50%);
+    left:15%;
+    transform: translate(-15%, -50%);
+    width:40%;
     color:rgba(255, 255, 255, 0.75);
     padding:10px;
 }
@@ -29,9 +38,9 @@ h1{
 .right-container{
     position:absolute;
     top:20%;
-    left:67%;
-    width:50%;
-    transform: translate(-50%, -50%);
+    left:65%;
+    width:40%;
+    transform: translate(-30%, -50%);
     color:rgba(255, 255, 255, 0.75);
     padding:10px;
 }
