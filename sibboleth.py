@@ -35,7 +35,7 @@ try:
 except:
     flag=1
 
-print(flag)
+#a = driver.execute_script("return prompt('Enter smth','smth')")
 
 if flag==0:
     print("Switching to signin pop-up window.")
@@ -83,31 +83,36 @@ try:
     #mycart_button.sendKeys(Keys.RETURN)
     #mycart_button.sendKeys(Keys.ENTER)
     print("My primary cart button successfully clicked.")
-    time.sleep(3.0)
 except:
     print("'MY PRIMARY CART' unable to be clicked...")
     driver.quit()
 
-print(driver.find_elements_by_css_selector('[data-action="register"]'))
-
-# try:
-#     element = WebDriverWait(driver, 10).until(
-#         EC.presence_of_element_located((By.CLASS_NAME, "panel-body"))
-#     )
-#     print("found!")
-# finally:
-#     driver.quit()
+try:
+    element = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.CLASS_NAME, "course-group"))
+    )
+    print("found!")
+except:
+    driver.quit()
 
 # if driver.find_elements_by_css_selector('.panel-active [data-kind="results"]'):
 #     print("Element exists")
 
 courses = []
-for course in driver.find_elements_by_css_selector('.course-group'):
+for course in driver.find_elements_by_css_selector('.course-bar'):
     try:
-        print("hello")
-        course_info = course.find_element_by_xpath('.//div[@class="course-code"]/a').text
-        print(course_info)
-        courses.append(course_info)
+        try:
+            #course_code = course.driver.find_elements_by_css_selector('.course-left').driver.find_elements_by_css_selector('.course-code')
+            course_code = course.find_element_by_css_selector('.course-code').text
+        except:
+            print("Failed to retrieve course code...")
+        try:
+            #course_title = course.driver.find_elements_by_css_selector('.course-right').driver.find_elements_by_css_selector('.course-title')
+            course_title = course.find_element_by_css_selector('.course-title').text
+        except:
+            print("Failed to retrieve course title...")
+        print(course_code, course_title)
+        courses.append((course_code,course_title))
     except:
         driver.quit()
 #print(courses)
