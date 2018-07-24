@@ -16,29 +16,39 @@
 
 <body>
 
-    <section class="login">
-        <h2 id="welcome-text">Welcome.</h2>
-        <span class="input input--yoshiko">
+    <section class="setup" id="enter-name">
+        <h2 id="setup-text1">Welcome.</h2>
+        <span class="input input--yoshiko" id="name-form">
             <input class="input__field input__field--yoshiko" type="text" id="first-name">
-            <label class="input__label input__label--yoshiko" for="first-name">
+            <label class="input__label input__label--yoshiko" for="first-name" id="name-label">
                 <span class="input__label-content input__label-content--yoshiko" data-content="First Name">First Name</span>
             </label>
         </span>
     </section>
 
-    <section class="main">
-    <div class="left-container">
+    <section class="setup" id="enter-age">
+        <h2 id="setup-text2">Enter your DOB.</h2>
+        <span class="input input--yoshiko" id="age-form">
+            <input class="input__field input__field--yoshiko" type="date" id="birthday">
+            <label class="input__label input__label--yoshiko" for="birthday" id="birthday-label">
+                <span class="input__label-content input__label-content--yoshiko" data-content="Birthday">Birthday</span>
+            </label>
+        </span>
+    </section>
 
-        <h1 id="hello">Hello Ken.</h1>
-        <div class="time" id="time"></div>
-        <div class="age" id="age"></div>
-        <div class="fact" id="fact"></div>
-    </div>
-    <div class="right-container">
-        <h1>Class Schedule</h1>
-        <ul class="class-list" id="class-list">
-        </ul>
-    </div>
+    <section class="main">
+        <div class="left-container">
+
+            <h1 id="hello">Hello Ken.</h1>
+            <div class="time" id="time"></div>
+            <div class="age" id="age"></div>
+            <div class="fact" id="fact"></div>
+        </div>
+        <div class="right-container">
+            <h1>Class Schedule</h1>
+            <ul class="class-list" id="class-list">
+            </ul>
+        </div>
     </section>
 
     <script src="js/classie.js"></script>
