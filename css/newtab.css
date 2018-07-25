@@ -1,0 +1,129 @@
+html,body{
+    font-family: 'Lato', sans-serif;
+    /*background:rgba(0,0,0,0.4);*/
+    border:none;
+    font-weight:200;
+}
+
+p{
+    font-family: 'Lato', sans-serif;
+    color:rgba(0, 0, 0, 0.75);
+}
+
+h1{
+    font-size:50px;
+    font-weight:600;
+    font-family: 'Lato', sans-serif;
+    color:black;
+}
+
+.class-list{
+    padding: 0;
+    list-style-type: none;
+}
+
+.class-row{
+    font-size:20px;
+    margin-bottom:20px;
+}
+
+.error_shake {
+    -webkit-animation: kf_shake 0.4s 1 linear;
+    -moz-animation: kf_shake 0.4s 1 linear;
+    -o-animation: kf_shake 0.4s 1 linear;
+    color:#d39c9c!important;
+}
+@-webkit-keyframes kf_shake {
+    0% { -webkit-transform: translate(30px); }
+    20% { -webkit-transform: translate(-30px); }
+    40% { -webkit-transform: translate(15px); }
+    60% { -webkit-transform: translate(-15px); }
+    80% { -webkit-transform: translate(8px); }
+    100% { -webkit-transform: translate(0px); }
+}
+@-moz-keyframes kf_shake {
+    0% { -moz-transform: translate(30px); }
+    20% { -moz-transform: translate(-30px); }
+    40% { -moz-transform: translate(15px); }
+    60% { -moz-transform: translate(-15px); }
+    80% { -moz-transform: translate(8px); }
+    100% { -moz-transform: translate(0px); }
+}
+@-o-keyframes kf_shake {
+    0% { -o-transform: translate(30px); }
+    20% { -o-transform: translate(-30px); }
+    40% { -o-transform: translate(15px); }
+    60% { -o-transform: translate(-15px); }
+    80% { -o-transform: translate(8px); }
+    100% { -o-origin-transform: translate(0px); }
+}
+
+#birthday::-webkit-datetime-edit{ color: transparent; }
+/* Include this to make it visible when input is clicked */
+#birthday:focus::-webkit-datetime-edit{ color: rgba(0, 0, 0, 0.5); }
+
+section.main{
+    display:none;
+}
+
+section#enter-age{
+    display:none;
+}
+
+section#enter-name{
+    display:none;
+}
+
+.left-container{
+    position:absolute;
+    top:40%;
+    left:30%;
+    transform: translate(-50%, -50%);
+    width:40%;
+    color:rgba(0, 0, 0, 0.75);
+    padding:10px;
+}
+
+.class-code{
+    font-size:25px;
+    color:black;
+}
+
+.right-container{
+    position:absolute;
+    top:20%;
+    left:76%;
+    width:40%;
+    transform: translate(-50%, -0%);
+    color:rgba(0, 0, 0, 0.75);
+    padding:10px;
+    display:none;
+}
+
+.time{
+    font-size:25px;
+    margin-bottom:20px;
+}
+
+#hello{
+    text-decoration: none;
+}
+
+.age{
+    font-size:25px;
+    margin-bottom:20px;
+}
+
+.fact{
+    font-size:25px;
+}
+
+strong{
+    font-weight:800;
+    font-size:30px;
+    color:black;
+}
+
+#apps{
+    visibility: hidden;
+}
