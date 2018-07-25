@@ -33,6 +33,10 @@ function formatDate(date) {
 
     $.get('http://numbersapi.com/' + realmonth.toString() + '/' + day.toString(), function (data) {
         $('#fact').html("<strong>Today's Fun Fact</strong>: " + data);
+        var date = monthNames[monthIndex] + ' ' + day + ', ' + year;
+        var date_tag = "Todays Date: <strong>" + date + "</strong>.";
+        $("#time").html(date_tag);
+        load_main();
     });
 
     return monthNames[monthIndex] + ' ' + day + ', ' + year;
@@ -57,23 +61,23 @@ function setClasses(classes) {
     }
 }
 
-function setup_name(){
+function setup_name() {
     $("#enter-age").fadeOut("slow");
-    $(".main").fadeOut("slow", function(){
+    $(".main").fadeOut("slow", function () {
         $("#enter-name").fadeIn("slow");
     });
 }
 
-function setup_age(){
+function setup_age() {
     $(".main").fadeOut("slow");
-    $("#enter-name").fadeOut("slow", function(){
+    $("#enter-name").fadeOut("slow", function () {
         $("#enter-age").fadeIn("slow");
     });
 }
 
-function load_main(){
-    $("#enter-name").fadeOut("slow", function(){
-        $("#enter-age").fadeOut("slow", function(){
+function load_main() {
+    $("#enter-name").fadeOut("slow", function () {
+        $("#enter-age").fadeOut("slow", function () {
             $(".main").fadeIn("slow");
         });
     });
@@ -107,10 +111,6 @@ var getAllCallback = function (list) {
         }
     });*/
 
-    $("#time").empty()
-    var date = "Todays Date: <strong>" + formatDate(new Date()) + "</strong>.";
-    $("#time").append(date);
- 
     /*
     Button press for the name value
     */
@@ -127,7 +127,7 @@ var getAllCallback = function (list) {
             console.log("Retrieved items: ");
             console.log(items['first-name']);
         });
-        $('#hello').html('Hello '+first_name+'.');
+        $('#hello').html('Hello ' + first_name + '.');
         setup_age();
     });
     $('#first-name').keyup(function (e) {
@@ -167,13 +167,13 @@ var getAllCallback = function (list) {
         $('#age-form').delay(200).removeClass('error_shake');
     });
 
-    var temp=0;
+    var temp = 0;
 
     chrome.storage.sync.get("first-name", function (items) {
         if (Object.keys(items).length > 0) {
-            $('#hello').html('Hello '+items['first-name']+'.');
-            temp+=1;
-        }else{
+            $('#hello').html('Hello ' + items['first-name'] + '.');
+            temp += 1;
+        } else {
             setup_name();
         }
     });
@@ -182,12 +182,12 @@ var getAllCallback = function (list) {
         if (Object.keys(items).length > 0) {
             start = new Date(items['birthday']);
             timer = setInterval(age, 1);
-            if(temp==1){
-                load_main();
+            if (temp == 1) {
+                formatDate(new Date());
             }
-        }else{
+        } else {
             setup_age();
         }
     });
-    
+
 };
