@@ -7,14 +7,14 @@ html,body{
 
 p{
     font-family: 'Lato', sans-serif;
-    color:rgba(0, 0, 0, 0.75);
+    color:rgba(0, 0, 0, 0.6);
 }
 
 h1{
     font-size:50px;
     font-weight:600;
     font-family: 'Lato', sans-serif;
-    color:black;
+    color:rgba(0, 0, 0, 0.6);
 }
 
 .class-list{
@@ -80,7 +80,7 @@ section#enter-name{
     left:30%;
     transform: translate(-50%, -50%);
     width:40%;
-    color:rgba(0, 0, 0, 0.75);
+    color:rgba(0, 0, 0, 0.6);
     padding:10px;
 }
 
@@ -95,7 +95,7 @@ section#enter-name{
     left:76%;
     width:40%;
     transform: translate(-50%, -0%);
-    color:rgba(0, 0, 0, 0.75);
+    color:rgba(0, 0, 0, 0.6);
     padding:10px;
     display:none;
 }
@@ -120,8 +120,8 @@ section#enter-name{
 
 strong{
     font-weight:800;
-    font-size:30px;
-    color:black;
+    font-size:25px;
+    color:rgba(0, 0, 0, 0.8);
 }
 
 #apps{

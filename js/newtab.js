@@ -36,7 +36,6 @@ function formatDate(date) {
         var date = monthNames[monthIndex] + ' ' + day + ', ' + year;
         var date_tag = "Todays Date: <strong>" + date + "</strong>.";
         $("#time").html(date_tag);
-        load_main();
     });
 
     return monthNames[monthIndex] + ' ' + day + ', ' + year;
@@ -167,27 +166,34 @@ var getAllCallback = function (list) {
         $('#age-form').delay(200).removeClass('error_shake');
     });
 
-    var temp = 0;
+    let temp = 0;
+    let flag = 0;
 
     chrome.storage.sync.get("first-name", function (items) {
         if (Object.keys(items).length > 0) {
+            console.log("preloaded name")
             $('#hello').html('Hello ' + items['first-name'] + '.');
             temp += 1;
         } else {
+            console.log("setting up name")
+            flag = 1
             setup_name();
         }
     });
 
     chrome.storage.sync.get("birthday", function (items) {
         if (Object.keys(items).length > 0) {
+            console.log("preloaded date")
             start = new Date(items['birthday']);
             timer = setInterval(age, 1);
-            if (temp == 1) {
-                formatDate(new Date());
-            }
+            load_main();
         } else {
-            setup_age();
+            if(flag==0){
+                console.log("setting up age")
+                setup_age();
+            }
         }
+        formatDate(new Date());
     });
 
 };
