@@ -135,6 +135,11 @@ var getAllCallback = function (list) {
         }
     });
 
+    $('#reset-button').click(function(){
+        console.log("reset pressed")
+        setup_name();
+    });
+
     /*
     Button press for the birthday
     */
