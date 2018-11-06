@@ -16,18 +16,30 @@
 
 <body>
     <center><h1 id="hello"></h1></center>
+    <center><div class="age" style="margin-top:-15px;margin-bottom:25px;" id="age"></div></center>
     <!--<button class="cb-1" id="reset-button">Reset</button>-->
     <div id="columns" class="columns">
         <div class="row">
             <div class="column" draggable="true">
-                <header>Today's Date:</header>
+                <header>Date</header>
                 <div class="column-inner">
+                    <!--<div class="time" id="time"></div>-->
+                    <div class="date-container">
+                        <header id="time-month"></header>
+                        <div id="time-number">
 
+                        </div>
+                        <div id="time-day">
+                            
+                        </div>
+                    </div>
                 </div>
-                <div class="time" id="time"></div>
             </div>
             <div class="column" draggable="true">
-                <header>B</header>
+                <header>Today's Fun Fact</header>
+                <div class="column-inner">
+                    <div class="fact" id="fact"></div>
+                </div>
             </div>
             <div class="column" draggable="true">
                 <header>C</header>
@@ -35,13 +47,13 @@
         </div>
         <div class="row">
                 <div class="column" draggable="true">
-                    <header>A</header>
+                    <header>D</header>
                 </div>
                 <div class="column" draggable="true">
-                    <header>B</header>
+                    <header>E</header>
                 </div>
                 <div class="column" draggable="true">
-                    <header>C</header>
+                    <header>F</header>
                 </div>
         </div>
     </div>
@@ -69,10 +81,6 @@
     <section class="main">
         <div class="left-container">
 
-            
-            
-            <div class="age" id="age"></div>
-            <div class="fact" id="fact"></div>
         </div>
         <div class="right-container">
             <h1>Class Schedule</h1>

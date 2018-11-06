@@ -24,24 +24,30 @@ function formatDate(date) {
         "August", "September", "October",
         "November", "December"
     ];
+    var weekDays = [
+        "Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"
+    ];
 
     var day = date.getDate();
     var monthIndex = date.getMonth();
     var year = date.getFullYear();
+    var day_of_week = date.getDay();
 
     var realmonth = monthIndex + 1
 
     $.get('http://numbersapi.com/' + realmonth.toString() + '/' + day.toString(), function (data) {
-        $('#fact').html("<strong>Today's Fun Fact</strong>: " + data);
+        $('#fact').html(data);
         var date = monthNames[monthIndex] + ' ' + day + ', ' + year;
-        var date_tag = "Todays Date: <strong>" + date + "</strong>.";
+        var date_tag = weekDays[day_of_week]+ ', ' + date;
+        $('#time-month').html(monthNames[monthIndex]);
+        $('#time-number').html(day);
+        $('#time-day').html(weekDays[day_of_week]);
         $("#time").html(date_tag);
     });
 
     return monthNames[monthIndex] + ' ' + day + ', ' + year;
 }
 
-var start = new Date('01/01/2001');
 var timer;
 
 function age() {
