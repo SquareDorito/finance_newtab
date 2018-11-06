@@ -15,13 +15,37 @@
 </head>
 
 <body>
+    <center><h1 id="hello"></h1></center>
     <!--<button class="cb-1" id="reset-button">Reset</button>-->
-    <div id="columns">
-        <div class="column" draggable="true"><header>A</header></div>
-        <div class="column" draggable="true"><header>B</header></div>
-        <div class="column" draggable="true"><header>C</header></div>
-      </div>
-    
+    <div id="columns" class="columns">
+        <div class="row">
+            <div class="column" draggable="true">
+                <header>Today's Date:</header>
+                <div class="column-inner">
+
+                </div>
+                <div class="time" id="time"></div>
+            </div>
+            <div class="column" draggable="true">
+                <header>B</header>
+            </div>
+            <div class="column" draggable="true">
+                <header>C</header>
+            </div>
+        </div>
+        <div class="row">
+                <div class="column" draggable="true">
+                    <header>A</header>
+                </div>
+                <div class="column" draggable="true">
+                    <header>B</header>
+                </div>
+                <div class="column" draggable="true">
+                    <header>C</header>
+                </div>
+        </div>
+    </div>
+
     <section class="setup" id="enter-name">
         <h2 id="setup-text1">Welcome.</h2>
         <span class="input input--yoshiko" id="name-form">
@@ -45,8 +69,8 @@
     <section class="main">
         <div class="left-container">
 
-            <h1 id="hello"></h1>
-            <div class="time" id="time"></div>
+            
+            
             <div class="age" id="age"></div>
             <div class="fact" id="fact"></div>
         </div>

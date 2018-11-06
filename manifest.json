@@ -5,7 +5,8 @@
     "version": "1.0.0",
     "permissions" : [
         "management",
-        "storage"
+        "storage",
+        "history"
     ],
     "chrome_url_overrides" : {
         "newtab": "newtab.html"

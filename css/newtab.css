@@ -177,12 +177,12 @@ button.cb-1:hover:before,button.cb-1:hover:after{
     -webkit-user-drag: element;
   }
   .column {
-    height: 150px;
-    width: 150px;
+    height: 300px;
+    width: 350px;
     float: left;
     border: 1px solid rgba(0, 0, 0, 0.6);
     background-color: rgb(230, 230, 230);
-    margin-right: 5px;
+    margin: 7px;
     -webkit-border-radius: 3px;
     -ms-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -192,19 +192,23 @@ button.cb-1:hover:before,button.cb-1:hover:after{
   }
   .column header {
     color: #fff;
-    padding: 5px;
-    background:#9cadd3;
+    padding: 7px;
+    font-size:20;
+    background:#a5b7df;
     border-bottom: 1px solid rgba(0, 0, 0, 0.6);
-    -webkit-border-top-left-radius: 3px;
-    -moz-border-radius-topleft: 3px;
-    -ms-border-radius-topleft: 3px;
     border-top-left-radius: 3px;
-    -webkit-border-top-right-radius: 3px;
-    -ms-border-top-right-radius: 3px;
-    -moz-border-radius-topright: 3px;
     border-top-right-radius: 3px;
   }
 
   .column.over {
     border: 1px dashed rgba(0, 0, 0, 0.6);
+  }
+
+  .column-inner{
+      padding:7px;
+  }
+
+  .row {
+      display: flex;
+      justify-content: center;
   }
