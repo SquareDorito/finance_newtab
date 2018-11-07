@@ -54,7 +54,7 @@ function age() {
     var now = new Date();
     var age = now.getTime() - start.getTime();
     var year = (age / 31556926000); // seconds in a year * 1000
-    $('#age').html("You are " + "<strong>" + year.toFixed(9) + "</strong> years old.");
+    $('#age').html("You are " + "<strong style='font-size:32;color:rgba(0,0,0,0.6);'>" + year.toFixed(9) + "</strong> years old.");
 }
 
 function setClasses(classes) {
@@ -116,6 +116,10 @@ var getAllCallback = function (list) {
         }
     });*/
 
+    particlesJS.load('particles-js', 'particlesjs-config.json', function() {
+        console.log('callback - particles.js config loaded');
+    });
+
     chrome.history.search({text: '', maxResults: 10}, function(data) {
         data.forEach(function(page) {
             console.log(page.url);
@@ -146,14 +150,6 @@ var getAllCallback = function (list) {
         this.classList.remove('over');  // this / e.target is previous target element.
     }
 
-    var cols = document.querySelectorAll('#columns .column');
-    [].forEach.call(cols, function (col) {
-        col.addEventListener('dragstart', handleDragStart, false);
-        col.addEventListener('dragenter', handleDragEnter, false);
-        col.addEventListener('dragover', handleDragOver, false);
-        col.addEventListener('dragleave', handleDragLeave, false);
-    });
-
     function handleDrop(e) {
         // this/e.target is current target element.
 
@@ -179,16 +175,6 @@ var getAllCallback = function (list) {
         });
     }
 
-    var cols = document.querySelectorAll('#columns .column');
-    [].forEach.call(cols, function (col) {
-        col.addEventListener('dragstart', handleDragStart, false);
-        col.addEventListener('dragenter', handleDragEnter, false)
-        col.addEventListener('dragover', handleDragOver, false);
-        col.addEventListener('dragleave', handleDragLeave, false);
-        col.addEventListener('drop', handleDrop, false);
-        col.addEventListener('dragend', handleDragEnd, false);
-    });
-
     var dragSrcEl = null;
 
     function handleDragStart(e) {
@@ -201,6 +187,15 @@ var getAllCallback = function (list) {
         e.dataTransfer.setData('text/html', this.innerHTML);
     }
 
+    var cols = document.querySelectorAll('.column');
+    [].forEach.call(cols, function (col) {
+        col.addEventListener('dragstart', handleDragStart, false);
+        col.addEventListener('dragenter', handleDragEnter, false)
+        col.addEventListener('dragover', handleDragOver, false);
+        col.addEventListener('dragleave', handleDragLeave, false);
+        col.addEventListener('drop', handleDrop, false);
+        col.addEventListener('dragend', handleDragEnd, false);
+    });
 
     /*
     Button press for the name value
