@@ -68,6 +68,9 @@ function setClasses(classes) {
 
 function setup_name() {
     $("#enter-age").fadeOut("slow");
+    $("#columns").fadeOut("slow");
+    $(".age").fadeOut("slow");
+    $("#hello").fadeOut("slow");
     $(".main").fadeOut("slow", function () {
         $("#enter-name").fadeIn("slow");
     });
@@ -75,6 +78,9 @@ function setup_name() {
 
 function setup_age() {
     $(".main").fadeOut("slow");
+    $("#columns").fadeOut("slow");
+    $(".age").fadeOut("slow");
+    $("#hello").fadeOut("slow");
     $("#enter-name").fadeOut("slow", function () {
         $("#enter-age").fadeIn("slow");
     });
@@ -83,6 +89,9 @@ function setup_age() {
 function load_main() {
     $("#enter-name").fadeOut("slow", function () {
         $("#enter-age").fadeOut("slow", function () {
+            $(".age").fadeIn("slow");
+            $("#hello").fadeIn("slow");
+            $("#columns").fadeIn("slow");
             $(".main").fadeIn("slow");
         });
     });
