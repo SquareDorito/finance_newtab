@@ -145,7 +145,8 @@ var getAllCallback = function (list) {
         document.getElementById("clock-animations").innerHTML = stylesDeg;
 
     })();
-
+    d = new Date();
+    console.log(d.getHours());
 
     $("#columns").hide()
 

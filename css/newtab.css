@@ -360,13 +360,13 @@ button.cb-1:hover:before,button.cb-1:hover:after{
         .clock-hour{
             position: absolute;
             z-index: 2;
-            top: 30px;
-            left: 56px;
+            top: 47px;
+            left: 88px;
             width: 3px;
             height: 40px;
             background-color: #555;
             box-shadow: 0 0 2px rgba(0,0,0,.2);
-            transform-origin: 1px 75px;
+            transform-origin: 1px 40px;
             transition: .5s;
             -webkit-animation: rotate-hour 43200s linear infinite;
             -moz-animation: rotate-hour 43200s linear infinite;
@@ -374,13 +374,13 @@ button.cb-1:hover:before,button.cb-1:hover:after{
         .clock-minute{
             position: absolute;
             z-index: 3;
-            top: 29px;
-            left: 85px;
+            top: 28px;
+            left: 87px;
             width: 2px;
             height: 60px;
             background-color: #555;
             box-shadow: 0 0 2px rgba(0,0,0,.2);
-            transform-origin: 1px 75px;
+            transform-origin: 1px 60px;
             transition: .5s;
             -webkit-animation: rotate-minute 3600s linear infinite;
             -moz-animation: rotate-minute 3600s linear infinite;
