@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="css/set2.css" />
     <link rel="stylesheet" type="text/css" href="css/demo.css" />
     <link rel="stylesheet" type="text/css" href="css/newtab.css" />
-
+    <style id="clock-animations"></style>
     <style>
     </style>
     <title>New Tab</title>
@@ -21,7 +21,7 @@
     <center><div class="age" id="age"></div></center>
     <!--<button class="cb-1" id="reset-button">Reset</button>-->
     <div id="columns" class="columns">
-        <div class="row">
+
             <div class="column" draggable="true" id="column-A">
                 <header>Date</header>
                 <div class="column-inner">
@@ -43,21 +43,46 @@
                     <div class="fact" id="fact"></div>
                 </div>
             </div>
-            <div class="column" draggable="true" id="column-C">
-                <header>C</header>
+            <div class="column column-long" draggable="true" id="column-C">
+                <header>Today @ Ratty</header>
+                <div style="margin-top:6px;" id="ratty-status"></div>
+
             </div>
-        </div>
-        <div class="row">
-                <div class="column" draggable="true" id="column-D">
-                    <header>D</header>
+
+            <div class="column" draggable="true" id="column-D">
+                <header>Weather</header>
+            </div>
+            <div class="column" draggable="true" id="column-E">
+                <header>Time</header>
+                <div style="padding-left:25px;padding-top:5px;">
+                    <div class="clock-wrapper">
+                        <div class="clock-base">
+                            <div class="click-indicator">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                            <div class="clock-hour"></div>
+                            <div class="clock-minute"></div>
+                            <div class="clock-second"></div>
+                            <div class="clock-center"></div>
+                        </div>
+                    </div>
                 </div>
-                <div class="column" draggable="true" id="column-E">
-                    <header>E</header>
-                </div>
-                <div class="column" draggable="true" id="column-F">
-                    <header>F</header>
-                </div>
-        </div>
+            </div>
+            <div class="column" style="visibility: hidden;" draggable="true" id="placeholder">
+                <!--placeholder-->
+            </div>
+        
     </div>
 
     <section class="setup" id="enter-name">

@@ -18,5 +18,5 @@
         "css/demo.css",
         "css/set1.css"
     ],
-    "content_security_policy": "script-src 'self' https://ajax.googleapis.com http://127.0.0.1:5000; object-src 'self'"
+    "content_security_policy": "script-src 'self' https://ajax.googleapis.com http://127.0.0.1:5000 https://dining.brown.edu/cafe/sharpe-refectory/; object-src 'self'"
  }
