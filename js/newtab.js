@@ -2,6 +2,14 @@ document.addEventListener("DOMContentLoaded", function () {
     chrome.management.getAll(getAllCallback);
 });
 
+var weekDays = [
+    "Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"
+];
+
+var weekDaysAbv = [
+    "Sun","Mon","Tues","Wed","Thur","Fri","Sat"
+];
+
 $(function () {
     var dtToday = new Date();
 
@@ -70,6 +78,7 @@ function setup_name() {
     $("#enter-age").fadeOut("slow");
     $("#columns").fadeOut("slow");
     $(".age").fadeOut("slow");
+    $("#clock-container").fadeOut("slow");
     $("#hello").fadeOut("slow");
     $(".main").fadeOut("slow", function () {
         $("#enter-name").fadeIn("slow");
@@ -80,6 +89,7 @@ function setup_age() {
     $(".main").fadeOut("slow");
     $("#columns").fadeOut("slow");
     $(".age").fadeOut("slow");
+    $("#clock-container").fadeOut("slow");
     $("#hello").fadeOut("slow");
     $("#enter-name").fadeOut("slow", function () {
         $("#enter-age").fadeIn("slow");
@@ -93,6 +103,8 @@ function load_main() {
             $("#hello").fadeIn("slow");
             $("#columns").fadeIn("slow");
             $('#columns').css('display','grid');
+            $("#clock-container").fadeIn("slow");
+            $('#clock-container').css('display','flex');
             $(".main").fadeIn("slow");
         });
     });
@@ -126,27 +138,17 @@ var getAllCallback = function (list) {
         }
     });*/
 
-    (function(){
+    requestAnimationFrame(updateTime)
 
-        //generate clock animations
-        var now = new Date(),
-            hourDeg   = now.getHours() / 12 * 360 + now.getMinutes() / 60 * 30,
-            minuteDeg = now.getMinutes() / 60 * 360 + now.getSeconds() / 60 * 6,
-            secondDeg = now.getSeconds() / 60 * 360,
-            stylesDeg = [
-                "@-webkit-keyframes rotate-hour{from{transform:rotate(" + hourDeg + "deg);}to{transform:rotate(" + (hourDeg + 360) + "deg);}}",
-                "@-webkit-keyframes rotate-minute{from{transform:rotate(" + minuteDeg + "deg);}to{transform:rotate(" + (minuteDeg + 360) + "deg);}}",
-                "@-webkit-keyframes rotate-second{from{transform:rotate(" + secondDeg + "deg);}to{transform:rotate(" + (secondDeg + 360) + "deg);}}",
-                "@-moz-keyframes rotate-hour{from{transform:rotate(" + hourDeg + "deg);}to{transform:rotate(" + (hourDeg + 360) + "deg);}}",
-                "@-moz-keyframes rotate-minute{from{transform:rotate(" + minuteDeg + "deg);}to{transform:rotate(" + (minuteDeg + 360) + "deg);}}",
-                "@-moz-keyframes rotate-second{from{transform:rotate(" + secondDeg + "deg);}to{transform:rotate(" + (secondDeg + 360) + "deg);}}"
-            ].join("");
-
-        document.getElementById("clock-animations").innerHTML = stylesDeg;
-
-    })();
-    d = new Date();
-    console.log(d.getHours());
+    function updateTime() {
+        
+        var d = new Date();
+        document.documentElement.style.setProperty('--timer-day', "'" + weekDaysAbv[d.getDay()] + "'");
+        document.documentElement.style.setProperty('--timer-hours', "'" + d.getHours().toString() + "'");
+        document.documentElement.style.setProperty('--timer-minutes', "'" + d.getMinutes().toString() + "'");
+        document.documentElement.style.setProperty('--timer-seconds', "'" + d.getSeconds().toString() + "'");
+        requestAnimationFrame(updateTime);
+    }
 
     $("#columns").hide()
 

@@ -17,15 +17,49 @@
 
 <body>
     <div id="particles-js"></div>
-    <div style="padding-top:50px;margin-bottom:25px;"><center><h1 id="hello"></h1></center></div>
-    <center><div class="age" id="age"></div></center>
+    <div style="padding-top:200px;margin-bottom:25px;"><center><h1 id="hello"></h1></center></div>
     <!--<button class="cb-1" id="reset-button">Reset</button>-->
+    <div class="clock-container" id="clock-container">
+        <div class="clock-col" id="day1">
+          <p class="clock-day clock-timer">
+          </p>
+          <p class="clock-label">
+            Day
+          </p>
+        </div>
+        <div class="vl"></div>
+        <div class="clock-col">
+          <p class="clock-hours clock-timer">
+          </p>
+          <p class="clock-label">
+            Hours
+          </p>
+        </div>
+        <div class="vl"></div>
+        <div class="clock-col">
+          <p class="clock-minutes clock-timer">
+          </p>
+          <p class="clock-label">
+            Min
+          </p>
+        </div>
+        <div class="vl"></div>
+        <div class="clock-col">
+          <p class="clock-seconds clock-timer">
+          </p>
+          <p class="clock-label">
+            Sec
+          </p>
+        </div>
+      </div>
+    <center><div class="age" id="age"></div></center>
+
+    <!--
     <div id="columns" class="columns">
 
             <div class="column" draggable="true" id="column-A">
                 <header>Date</header>
                 <div class="column-inner">
-                    <!--<div class="time" id="time"></div>-->
                     <div class="date-container">
                         <header id="time-month"></header>
                         <div id="time-number">
@@ -54,36 +88,12 @@
             </div>
             <div class="column" draggable="true" id="column-E">
                 <header>Time</header>
-                <div style="padding-left:25px;padding-top:5px;">
-                    <div class="clock-wrapper">
-                        <div class="clock-base">
-                            <div class="click-indicator">
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                            </div>
-                            <div class="clock-hour"></div>
-                            <div class="clock-minute"></div>
-                            <div class="clock-second"></div>
-                            <div class="clock-center"></div>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
             <div class="column" style="visibility: hidden;" draggable="true" id="placeholder">
-                <!--placeholder-->
             </div>
-        
     </div>
+    -->
 
     <section class="setup" id="enter-name">
         <h2 id="setup-text1">Welcome.</h2>
