@@ -6,8 +6,16 @@
     "permissions" : [
         "management",
         "storage",
-        "history"
+        "history",
+        "notifications",
+        "webRequest",
+        "webRequestBlocking",
+        "<all_urls>"
     ],
+    "background": {
+        "scripts": ["js/background.js"],
+        "persistent": true
+    },
     "chrome_url_overrides" : {
         "newtab": "newtab.html"
     },
@@ -16,7 +24,8 @@
         "css/normalize.css",
         "fonts/font-awesome-4.2.0/css/font-awesome.min.css",
         "css/demo.css",
-        "css/set1.css"
+        "css/set1.css",
+        "block.html"
     ],
     "content_security_policy": "script-src 'self' https://ajax.googleapis.com http://127.0.0.1:5000 https://dining.brown.edu/cafe/sharpe-refectory/; object-src 'self'"
  }
