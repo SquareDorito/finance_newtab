@@ -1,1 +1,1 @@
-window.location = "about:blank";
+window.location.href = chrome.extension.getURL('../block.html');

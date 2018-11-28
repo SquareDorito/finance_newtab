@@ -7,14 +7,11 @@
         "management",
         "storage",
         "history",
-        "notifications",
         "webRequest",
-        "webRequestBlocking",
-        "<all_urls>"
+        "webRequestBlocking"
     ],
     "background": {
-        "scripts": ["js/background.js"],
-        "persistent": true
+        "scripts": ["js/background.js"]
     },
     "chrome_url_overrides" : {
         "newtab": "newtab.html"
@@ -27,5 +24,9 @@
         "css/set1.css",
         "block.html"
     ],
+    "content_scripts": [{
+        "js": ["js/override.js"],
+        "matches": ["https://www.facebook.com/*","https://www.youtube.com/*","https://www.reddit.com/*","https://www.netflix.com/*"]
+    }],
     "content_security_policy": "script-src 'self' https://ajax.googleapis.com http://127.0.0.1:5000 https://dining.brown.edu/cafe/sharpe-refectory/; object-src 'self'"
  }

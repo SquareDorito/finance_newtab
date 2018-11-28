@@ -1,12 +1,10 @@
 chrome.webRequest.onBeforeRequest.addListener(
     function(details) {
-        console.log(details.url);
-        if(details.url.startsWith("https://facebook.com/")){
-            //return {redirectUrl: chrome.runtime.getURL('../block.html')};
-            //alert(chrome.runtime.getURL('../block.html'));
-            alert(details);
-            return {redirectUrl: "https://www.google.com"};
+
+        if(details.url.startsWith("https://facebook.com/")){            
+            return {redirectUrl: chrome.extension.getURL('../block.html')};
         }
+        return {redirectUrl: details.url};
     },
     {
         urls: [
