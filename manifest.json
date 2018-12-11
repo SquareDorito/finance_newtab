@@ -26,7 +26,7 @@
     ],
     "content_scripts": [{
         "js": ["js/override.js"],
-        "matches": ["https://www.facebook.com/*","https://www.youtube.com/*","https://www.reddit.com/*","https://www.netflix.com/*"]
+        "matches": ["https://www.facebook.com/*","https://www.youtube.com/*","https://www.reddit.com/*","https://www.netflix.com/*","https://www.twitch.tv/*", "https://twitter.com/*","https://www.twitter.com/"]
     }],
     "content_security_policy": "script-src 'self' https://ajax.googleapis.com http://127.0.0.1:5000 https://dining.brown.edu/cafe/sharpe-refectory/; object-src 'self'"
  }
