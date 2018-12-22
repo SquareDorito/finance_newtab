@@ -1,0 +1,60 @@
+body{
+    width:250px;
+    height:170px;
+    letter-spacing: normal;
+}
+
+#study-header {
+    font-size: 20px;
+    margin-bottom:35px;
+}
+
+.setup{
+    margin-top:0;
+    top: -7%;
+}
+
+#minutes-label{
+    font-size:12px;
+}
+
+#minutes{
+    font-size:16px;
+}
+
+#minutes-form{
+    width: 100%;
+    margin: 0 auto;
+
+}
+
+.error_shake {
+    -webkit-animation: kf_shake 0.4s 1 linear;
+    -moz-animation: kf_shake 0.4s 1 linear;
+    -o-animation: kf_shake 0.4s 1 linear;
+    color:#d39c9c!important;
+}
+@-webkit-keyframes kf_shake {
+    0% { -webkit-transform: translate(30px); }
+    20% { -webkit-transform: translate(-30px); }
+    40% { -webkit-transform: translate(15px); }
+    60% { -webkit-transform: translate(-15px); }
+    80% { -webkit-transform: translate(8px); }
+    100% { -webkit-transform: translate(0px); }
+}
+@-moz-keyframes kf_shake {
+    0% { -moz-transform: translate(30px); }
+    20% { -moz-transform: translate(-30px); }
+    40% { -moz-transform: translate(15px); }
+    60% { -moz-transform: translate(-15px); }
+    80% { -moz-transform: translate(8px); }
+    100% { -moz-transform: translate(0px); }
+}
+@-o-keyframes kf_shake {
+    0% { -o-transform: translate(30px); }
+    20% { -o-transform: translate(-30px); }
+    40% { -o-transform: translate(15px); }
+    60% { -o-transform: translate(-15px); }
+    80% { -o-transform: translate(8px); }
+    100% { -o-origin-transform: translate(0px); }
+}
