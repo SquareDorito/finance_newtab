@@ -150,7 +150,7 @@ var getAllCallback = function (list) {
         requestAnimationFrame(updateTime);
     }
 
-    $("#columns").hide()
+    $("#columns").hide();
 
     particlesJS.load('particles-js', 'particlesjs-config.json', function() {
         console.log('callback - particles.js config loaded');
