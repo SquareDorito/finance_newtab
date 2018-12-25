@@ -2,7 +2,7 @@
 Button press for the minutes
 */
 var timer;
-timer = setInterval(update,1000);
+timer = setInterval(update,100);
 
 $('#minutes').bind("enterKey", function (e) {
     var minutes = parseInt($('#minutes').val());
@@ -18,6 +18,9 @@ $('#minutes').bind("enterKey", function (e) {
         var current = d.getTime();
         var end = current + 60000*minutes;
         chrome.storage.sync.set({ "study": end });
+        $('#minutes').fadeOut('fast');
+        $('#minutes-label').fadeOut('fast');
+        $("#countdown").fadeIn('fast');
     } else {
         return;
     }
