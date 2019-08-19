@@ -268,7 +268,9 @@ var getAllCallback = function (list) {
     */
     $('#birthday').bind("enterKey", function (e) {
         var birthday = $('#birthday').val();
-        if (birthday == '') {
+        var temp1 = new Date(birthday).getTime();
+        var temp2 = new Date().getTime();
+        if (birthday == '' || temp1>temp2) {
             console.log("Not a valid date.")
             $('#age-form').addClass('error_shake');
             return;
