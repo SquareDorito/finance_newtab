@@ -1,0 +1,47 @@
+#drag-1, #drag-2 {
+    width: 150px;
+    height: 150px;
+    min-width: 100px;
+    min-height: 100px;
+    margin: 10%;
+    background-color:#e1e1e1;
+    color: rgb(0, 0, 0);
+    border-radius: 5px;
+    border: 0.5px solid black;
+    padding: 0;
+    touch-action: none;
+    user-select: none;
+    -webkit-transform: translate(0px, 0px);
+            transform: translate(0px, 0px);
+}
+
+div[contenteditable="true"]{
+    cursor: text;
+}
+
+i[class="fa fa-cog"]{
+    color: white;
+}
+
+.menu {
+    height:20px;
+    width:100%;
+    background-color: rgb(60, 60, 60);
+    vertical-align: top;
+    color: white;
+    padding-top: 1px;
+    padding-left: 1px;
+}
+
+.notepad {
+    padding:10px;
+}
+
+#color-button {
+    border: 0;
+    padding: 0;
+    height:100%;
+    width:20px;
+    cursor: pointer;
+    background-color: transparent;
+}
