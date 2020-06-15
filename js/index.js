@@ -1,21 +1,41 @@
+let period_dict = {}
+period_dict['Y'] = 365*24*60*60 // seconds in a year
+period_dict['M'] = 31*24*60*60 // seconds in a month
+period_dict['W'] = 7*24*60*60 // seconds in a week
+period_dict['D'] = 24*60*60 // seconds in a week
+
 $(document).ready(function () {
     console.log("ready!");
-    let now = new Date().getTime() / 1000 | 0;
-    let year_ago = now - 31556952
-    console.log(now)
-    console.log(year_ago)
 
+    let period = 'Y'
+    let now = new Date().getTime() / 1000 | 0;
+    let old = now - period_dict[period]
+    // Raw JS
+    let url = "https://finnhub.io/api/v1/stock/candle?symbol=AAPL&resolution=D&from="+old.toString()+"&to="+now.toString()+"&token=brhub4vrh5r807v5kllg";
     $.ajax({
-        url: "http://127.0.0.1:5000/_get_data/",
-        type: "POST",
-        data: { symbol: "AAPL", interval: "D", period: "Y" },
+        url: url,
+        type: "GET",
+        data: { symbol: "AAPL", interval: "D", period: period },
         success: function (resp) {
-            plot(resp['data']);
+            initialiseChart(reformatData(resp));
         },
         error: function (e, s, t) {
             console.log("Error with _get_data");
         }
     });
+    
+    // Code with Flask server
+    // $.ajax({
+    //     url: "http://127.0.0.1:5000/_get_data/",
+    //     type: "POST",
+    //     data: { symbol: "AAPL", interval: "D", period: "Y" },
+    //     success: function (resp) {
+    //         plot(resp['data']);
+    //     },
+    //     error: function (e, s, t) {
+    //         console.log("Error with _get_data");
+    //     }
+    // });
 });
 
 var light_grey = "#f7f7f7"
@@ -63,7 +83,7 @@ function plot(data) {
         margin: {l: 40, r: 40, t: 40, b:40, pad: 0, autoexpand: false},
         title: {text: 'AAPL', yref: "paper", y: 1, yanchor: "bottom"},
         titlefont: {size: 20},
-        hoverlabel: {bgcolor: dark_grey, bordercolor: dark_grey, font: {family: 'Source Sans Pro, sans-serif', size: 10, color: light_grey}},
+        hoverlabel: {bgcolor: dark_grey, bordercolor: dark_grey, font: {family: 'Source Sans Pro, sans-serif', size: 11, color: light_grey}},
         autosize: true,
     };
     var config = {

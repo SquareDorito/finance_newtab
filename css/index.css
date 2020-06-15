@@ -2,28 +2,47 @@
 
 :root {
     --palette-light-grey: #D3D3D3;
+    --palette-transparent-grey: #d3d3d31d;
     --palette-dark-grey: #373737;
     --palette-almost-black: #060D13;
 }
 
 html, body {
     font-family: 'Source Sans Pro', sans-serif;
-    background-color: white;
+    background-color: var(--palette-dark-grey);
     padding: 0;
     margin: 0;
     overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+.axis path, .axis line, .axis {
+    stroke: var(--palette-light-grey);
+    color: var(--palette-light-grey);
+}
+
+.axis {
+    stroke: var(--palette-light-grey);
+    shape-rendering: crispEdges;
+}
+
+.full {
+    width: 100%;
+    height: 100%;
 }
 
 .quadrant {
     position: absolute;
     width: 50%;
     height: 50%;
-    border: 1px solid var(--palette-light-grey);
+    border: 1px solid var(--palette-transparent-grey);
+    display: flex; align-items: center
 }
 
 .border {
-    width: 94%;
-    height: 94%;
+    width: 96%;
+    height: 92%;
     margin: 0 auto;
 }
 
