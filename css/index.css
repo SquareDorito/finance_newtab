@@ -5,11 +5,12 @@
     --palette-transparent-grey: #d3d3d31d;
     --palette-dark-grey: #373737;
     --palette-almost-black: #060D13;
+    --palette-grey: #6f6f6f;
 }
 
 html, body {
     font-family: 'Source Sans Pro', sans-serif;
-    background-color: var(--palette-dark-grey);
+    background-color: white;
     padding: 0;
     margin: 0;
     overflow: hidden;
@@ -17,13 +18,7 @@ html, body {
     height: 100%;
 }
 
-.axis path, .axis line, .axis {
-    stroke: var(--palette-light-grey);
-    color: var(--palette-light-grey);
-}
-
 .axis {
-    stroke: var(--palette-light-grey);
     shape-rendering: crispEdges;
 }
 

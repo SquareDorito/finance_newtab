@@ -1,49 +1,4 @@
-const movingAverage = (data, numberOfPricePoints) => {
-    return data.map((row, index, total) => {
-        const start = Math.max(0, index - numberOfPricePoints);
-        const end = index;
-        const subset = total.slice(start, end + 1);
-        const sum = subset.reduce((a, b) => {
-            return a + b['close'];
-        }, 0);
-
-        return {
-            date: row['date'],
-            average: sum / subset.length
-        };
-    });
-};
-
-// credits: https://brendansudol.com/writing/responsive-d3
-const responsivefy = svg => {
-    // get container + svg aspect ratio
-    const container = d3.select(svg.node().parentNode),
-        width = parseInt(svg.style('width')),
-        height = parseInt(svg.style('height')),
-        aspect = width / height;
-
-    // get width of container and resize svg to fit it
-    const resize = () => {
-        var targetWidth = parseInt(container.style('width'));
-        svg.attr('width', targetWidth);
-        svg.attr('height', Math.round(targetWidth / aspect));
-    };
-
-    // add viewBox and preserveAspectRatio properties,
-    // and call resize so that svg resizes on inital page load
-    svg
-        .attr('viewBox', '0 0 ' + width + ' ' + height)
-        .attr('perserveAspectRatio', 'xMinYMid')
-        .call(resize);
-
-    // to register multiple listeners for same event type,
-    // you need to add namespace, i.e., 'click.foo'
-    // necessary if you call invoke this function for multiple svgs
-    // api docs: https://github.com/mbostock/d3/wiki/Selections#on
-    d3.select(window).on('resize.' + container.attr('id'), resize);
-};
-
-const createLineChart = data => {
+const createCandlestickChart = data => {
     data = data.filter(
         row => row['high'] && row['low'] && row['close'] && row['open']
     );
@@ -71,11 +26,11 @@ const createLineChart = data => {
     });
 
     const yMin = d3.min(data, d => {
-        return d['close'];
+        return d['low'];
     });
 
     const yMax = d3.max(data, d => {
-        return d['close'];
+        return d['high'];
     });
 
     // scale using range
@@ -123,94 +78,31 @@ const createLineChart = data => {
         .call(d3.axisRight(yScale));
 
     // renders close price line chart and moving average line chart
-
-    // generates lines when called
-    const line = d3
-        .line()
-        .x(d => {
-            return xScale(d['date']);
-        })
-        .y(d => {
-            return yScale(d['close']);
-        });
-
-    const movingAverageLine = d3
-        .line()
-        .x(d => {
-            return xScale(d['date']);
-        })
-        .y(d => {
-            return yScale(d['average']);
-        })
-        .curve(d3.curveBasis);
-
-    const movingAverageLine2 = d3
-        .line()
-        .x(d => {
-            return xScale(d['date']);
-        })
-        .y(d => {
-            return yScale(d['average']);
-        })
-        .curve(d3.curveBasis);
-
+    let xBand = d3.scaleBand().domain(d3.range(-1, data.length)).range([0, width]).padding(0.3)
     svg
-        .append('path')
-        .data([data]) // binds data to the line
-        .style('fill', 'none')
-        .attr('id', 'priceChart')
-        .attr('stroke', primary_color)
-        .attr('stroke-width', '1.5')
-        .attr('d', line);
-
-    // calculates simple moving average over 50 days
-    const movingAverageData = movingAverage(data, 50);
+        .selectAll()
+        .data(data)
+        .enter()
+        .append("rect")
+        .attr('x', d => xScale(d.date) - xBand.bandwidth())
+        .attr("class", "candle")
+        .attr('y', d => yScale(Math.max(d.open, d.close)))
+        .attr('width', xBand.bandwidth())
+        .attr('height', d => (d.open === d.close) ? 1 : yScale(Math.min(d.open, d.close))-yScale(Math.max(d.open, d.close)))
+        .attr("fill", d => (d.open === d.close) ? "silver" : (d.open > d.close) ? red : green)
+		
+    // draw high and low
     svg
-        .append('path')
-        .data([movingAverageData])
-        .style('fill', 'none')
-        .attr('id', 'movingAverageLine')
-        .attr('stroke', orange)
-        .attr('d', movingAverageLine);
-
-    // calculates simple moving average over 50 days
-    const movingAverageData2 = movingAverage(data, 25);
-    svg
-        .append('path')
-        .data([movingAverageData2])
-        .style('fill', 'none')
-        .attr('id', 'movingAverageLine')
-        .attr('stroke', blue)
-        .attr('d', movingAverageLine2);
-
-    // renders x and y crosshair
-    const focus = svg
-        .append('g')
-        .attr('class', 'focus')
-        .style('display', 'none');
-
-    focus.append('line').classed('x', true);
-    focus.append('line').classed('y', true);
-    focus.append('circle')
-        .attr('r', 4)
-        .style('fill', '#c0392b');
-
-    svg
-        .append('rect')
-        .attr('class', 'overlay')
-        .attr('width', width)
-        .attr('height', height)
-        .on('mouseover', () => focus.style('display', null))
-        .on('mouseout', () => focus.style('display', 'none'))
-        .on('mousemove', generateCrosshair);
-
-    d3.select('.overlay').style('fill', 'none');
-    d3.select('.overlay').style('pointer-events', 'all');
-
-    d3.selectAll('.focus line').style('fill', 'none');
-    d3.selectAll('.focus line').style('stroke', primary_color);
-    d3.selectAll('.focus line').style('stroke-width', '1px');
-    d3.selectAll('.focus line').style('stroke-dasharray', '3 3');
+        .selectAll()
+        .data(data)
+        .enter()
+        .append("line")
+        .attr("class", "stem")
+        .attr("x1", d => xScale(d.date) - xBand.bandwidth()/2)
+        .attr("x2", d => xScale(d.date) - xBand.bandwidth()/2)
+        .attr("y1", d => yScale(d.high))
+        .attr("y2", d => yScale(d.low))
+        .attr("stroke", d => (d.open === d.close) ? "white" : (d.open > d.close) ? red : green);
 
     var keys = ['Price', 'EMA-25', 'EMA-50']
     var colors = [primary_color, orange, blue]
@@ -325,7 +217,6 @@ const createLineChart = data => {
         .domain([yMinVolume, yMaxVolume])
         .range([height, height * (3 / 4)]);
 
-    let xBand = d3.scaleBand().domain(d3.range(-1, data.length)).range([0, width]).padding(0.3)
     svg
         .selectAll()
         .data(volData)
@@ -340,10 +231,11 @@ const createLineChart = data => {
             if (i === 0) {
                 return '#03a678';
             } else {
-                return volData[i - 1].close > d.close ? red: green; // green bar if price is rising during that period, and red when price  is falling
+                return light_grey;
+                // return volData[i - 1].close > d.close ? '#c0392b' : '#03a678'; // green bar if price is rising during that period, and red when price  is falling
             }
         })
-        .attr('width', xBand.bandwidth())
+        .attr('width', xBand.bandwidth()*0.8)
         .attr('height', d => {
             return height - yVolumeScale(d['volume']);
         });
