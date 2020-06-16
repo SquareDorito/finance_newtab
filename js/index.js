@@ -12,6 +12,7 @@ let orange = "#FF8900";
 let blue = "#4682B4";
 let red = '#c0392b';
 let green = '#03a678';
+let medium_grey= "#a5a5a5";
 let primary_color = grey;
 
 $(document).ready(function () {
@@ -19,12 +20,13 @@ $(document).ready(function () {
     let period = 'Y'
     let now = new Date().getTime() / 1000 | 0;
     let old = now - period_dict[period];
+    let interval = 'D'
     let dark_mode = false;
     if(dark_mode){
         primary_color = light_grey;
     }
     // Raw JS
-    let url = "https://finnhub.io/api/v1/stock/candle?symbol=AAPL&resolution=D&from="+old.toString()+"&to="+now.toString()+"&token=brhub4vrh5r807v5kllg";
+    let url = "https://finnhub.io/api/v1/stock/candle?symbol=AAPL&resolution="+interval+"&from="+old.toString()+"&to="+now.toString()+"&token=brhub4vrh5r807v5kllg";
     $.ajax({
         url: url,
         type: "GET",

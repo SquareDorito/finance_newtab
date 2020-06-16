@@ -1,18 +1,5 @@
 const createCandlestickChart = data => {
-    data = data.filter(
-        row => row['high'] && row['low'] && row['close'] && row['open']
-    );
-
-    thisYearStartDate = new Date(2018, 0, 1);
-
-    // filter out data based on time period
-    data = data.filter(row => {
-        if (row['date']) {
-            return row['date'] >= thisYearStartDate;
-        }
-    });
-
-    const margin = { top: 50, right: 50, bottom: 50, left: 50 };
+    const margin = { top: 25, right: 25, bottom: 40, left: 40 };
     const width = window.innerWidth - margin.left - margin.right; // Use the window's width
     const height = window.innerHeight - margin.top - margin.bottom; // Use the window's height
 
@@ -36,7 +23,7 @@ const createCandlestickChart = data => {
     // scale using range
     const xScale = d3
         .scaleTime()
-        .domain([xMin, xMax])
+        .domain([xMin-1000*period_dict['D'], xMax])
         .range([0, width]);
 
     const yScale = d3
@@ -60,9 +47,9 @@ const createCandlestickChart = data => {
         .attr('id', 'xAxis')
         .attr('class', 'axis')
         .attr('transform', `translate(0, ${height})`)
-        .style("font-size", "15px")
+        .style("font-size", "10px")
         .style("font-weight", "100")
-        .style('stroke', primary_color)
+        // .style('stroke', primary_color)
         .style('color', primary_color)
         .call(d3.axisBottom(xScale));
 
@@ -70,64 +57,25 @@ const createCandlestickChart = data => {
         .append('g')
         .attr('id', 'yAxis')
         .attr('class', 'axis')
-        .attr('transform', `translate(${width}, 0)`)
-        .style("font-size", "15px")
+        .style("font-size", "10px")
         .style("font-weight", "100")
-        .style('stroke', primary_color)
         .style('color', primary_color)
-        .call(d3.axisRight(yScale));
-
-    // renders close price line chart and moving average line chart
-    let xBand = d3.scaleBand().domain(d3.range(-1, data.length)).range([0, width]).padding(0.3)
+        .call(d3.axisLeft(yScale).ticks(Math.floor(height/50)));
+    
     svg
-        .selectAll()
-        .data(data)
-        .enter()
-        .append("rect")
-        .attr('x', d => xScale(d.date) - xBand.bandwidth())
-        .attr("class", "candle")
-        .attr('y', d => yScale(Math.max(d.open, d.close)))
-        .attr('width', xBand.bandwidth())
-        .attr('height', d => (d.open === d.close) ? 1 : yScale(Math.min(d.open, d.close))-yScale(Math.max(d.open, d.close)))
-        .attr("fill", d => (d.open === d.close) ? "silver" : (d.open > d.close) ? red : green)
-		
-    // draw high and low
-    svg
-        .selectAll()
-        .data(data)
-        .enter()
-        .append("line")
-        .attr("class", "stem")
-        .attr("x1", d => xScale(d.date) - xBand.bandwidth()/2)
-        .attr("x2", d => xScale(d.date) - xBand.bandwidth()/2)
-        .attr("y1", d => yScale(d.high))
-        .attr("y2", d => yScale(d.low))
-        .attr("stroke", d => (d.open === d.close) ? "white" : (d.open > d.close) ? red : green);
+        .append("g")         
+        .attr("class", "grid")
+        .call(d3.axisLeft(yScale)
+            .tickSize(-width, 0, 0)
+            .tickFormat("")
+        )
 
-    var keys = ['Price', 'EMA-25', 'EMA-50']
-    var colors = [primary_color, orange, blue]
-    var size = 12;
-    svg.selectAll('legendDots')
-        .data(keys)
-        .enter()
-        .append("rect")
-            .attr("width", size)
-            .attr("height", size)
-            .style("fill", function(_, i){ return colors[i]})
-        .attr('transform', (_, i) => {
-            return `translate(0, ${i * 20})`;
-        });
-    svg.selectAll("legendLabels")
-        .data(keys)
-        .enter()
-        .append("text")
-            .style("fill", function(_,i){ return colors[i]})
-            .text(function(d){ return d})
-            .attr("text-anchor", "left")
-            .style("alignment-baseline", "middle")
-        .attr('transform', (_, i) => {
-            return `translate(20, ${8+(i * 20)})`;
-        });
+    // svg.append("g")			
+    //   .attr("class", "grid")
+    //   .call(d3.axisLeft(yScale).ticks(5)
+    //       .tickSize(-width)
+    //       .tickFormat("")
+    //   )
 
     //returs insertion point
     const bisectDate = d3.bisector(d => d.date).left;
@@ -166,7 +114,7 @@ const createCandlestickChart = data => {
         // updates the legend to display the date, open, close, high, low, and volume of the selected mouseover area
         updateLegends(currentPoint);
     }
-    
+
     /* Legends */
     const updateLegends = currentData => {
         d3.selectAll('.lineLegend').remove();
@@ -202,13 +150,11 @@ const createCandlestickChart = data => {
     };
 
     /* Volume series bars */
-    const volData = data.filter(d => d['volume'] !== null && d['volume'] !== 0);
-
-    const yMinVolume = d3.min(volData, d => {
+    const yMinVolume = d3.min(data, d => {
         return Math.min(d['volume']);
     });
 
-    const yMaxVolume = d3.max(volData, d => {
+    const yMaxVolume = d3.max(data, d => {
         return Math.max(d['volume']);
     });
 
@@ -217,30 +163,100 @@ const createCandlestickChart = data => {
         .domain([yMinVolume, yMaxVolume])
         .range([height, height * (3 / 4)]);
 
-    svg
+    let volumes = svg
+        .append('g')
+        .attr('class', 'volumes')
+
+    let xBand = d3.scaleBand().domain(d3.range(-1, data.length)).range([0, width]).padding(0.4)
+        
+    volumes
         .selectAll()
-        .data(volData)
+        .data(data)
         .enter()
         .append('rect')
-        .attr('x', d => xScale(d.date) - xBand.bandwidth())
+        .attr('x', d => xScale(d.date) - (xBand.bandwidth() / 2))
         .attr('y', d => {
             return yVolumeScale(d['volume']);
         })
-        .attr('class', 'vol')
+        .attr('class', 'volume')
+        .attr("id", (_, i) => { return "volume" + i; })
         .attr('fill', (d, i) => {
-            if (i === 0) {
-                return '#03a678';
-            } else {
-                return light_grey;
+            // if (i === 0) {
+            //     return '#03a678';
+            // } else {
+            return medium_grey;
                 // return volData[i - 1].close > d.close ? '#c0392b' : '#03a678'; // green bar if price is rising during that period, and red when price  is falling
-            }
+            // }
         })
-        .attr('width', xBand.bandwidth()*0.8)
+        .attr('width', xBand.bandwidth())
         .attr('height', d => {
             return height - yVolumeScale(d['volume']);
         });
+    
+    let candles = svg
+        .append('g')
+        .attr('class', 'candles')
+    candles
+        .selectAll()
+        .data(data)
+        .enter()
+        .append("rect")
+        .attr('x', d => xScale(d.date) - (xBand.bandwidth() / 2))
+        .attr("class", "candle")
+        .attr("id", (_, i) => { return "candle" + i; })
+        .attr('y', d => yScale(Math.max(d.open, d.close)))
+        .attr('width', xBand.bandwidth())
+        .attr('height', d => (d.open === d.close) ? 1 : yScale(Math.min(d.open, d.close)) - yScale(Math.max(d.open, d.close)))
+        .attr("fill", d => (d.open === d.close) ? primary_color : (d.open > d.close) ? red : green)
+
+    // draw high and low
+    let stems = svg
+        .append('g')
+        .attr('class', 'stems')
+    stems
+        .selectAll()
+        .data(data)
+        .enter()
+        .append("line")
+        .attr("class", "stem")
+        .attr("x1", d => xScale(d.date))
+        .attr("x2", d => xScale(d.date))
+        .attr("y1", d => yScale(d.high))
+        .attr("y2", d => yScale(d.low))
+        .attr("id", (_, i) => { return "stem" + i; })
+        .attr("stroke", d => (d.open === d.close) ? primary_color : (d.open > d.close) ? red : green);
     // testing axis for volume
     /*
     svg.append('g').call(d3.axisLeft(yVolumeScale));
     */
+    let bands = svg
+        .append('g')
+        .attr('class', 'bands')
+    bands
+        .selectAll()
+        .data(data)
+        .enter()
+        .append("rect")
+        .attr("class", "band")
+        .attr('x', d => xScale(d.date))
+        .attr("y", 0)
+        .attr("height", height)
+        .attr("width", 1)
+        .attr("id", (_, i) => { return "band" + i; })
+        .style("stroke-width", xBand.bandwidth());
+    d3.selectAll(".bands").selectAll(".band")
+        .on("mouseover", function (_, i) {
+            d3.select(this).classed("hoved", true);
+            d3.select("#stem" + i).classed("hoved", true);
+            d3.select("#candle" + i).classed("hoved", true);
+            d3.select("#volume" + i).classed("hoved", true);
+            // displayGen(i);
+        })
+        .on("mouseout", function (_, i) {
+            d3.select(this).classed("hoved", false);
+            d3.select("#stem" + i).classed("hoved", false);
+            d3.select("#candle" + i).classed("hoved", false);
+            d3.select("#volume" + i).classed("hoved", false);
+            // displayGen(genData.length-1);
+        });
 };
