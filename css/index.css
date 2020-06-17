@@ -6,7 +6,117 @@
     --palette-dark-grey: #373737;
     --palette-almost-black: #060D13;
     --palette-grey: #6f6f6f;
+    --sidebar-width: 250px;
     /* --palette-grey: #a5a5a5; */
+}
+
+.logo-container {
+    
+}
+
+.logo-container h1 {
+    text-align: center;
+    font-weight: 500;
+    font-size: 20px;
+    margin: 0;
+}
+
+.sidebar {
+    position: absolute;
+    top: 0;
+    padding: 0;
+    background-color: var(--palette-dark-grey);
+    z-index: 10;
+    width: var(--sidebar-width);
+    height: 100%;
+    transition: all .1s linear 0s;
+    padding: 5px;
+    box-sizing: border-box;
+    color: white;
+}
+
+.sidebar.hidden{
+    margin-left: calc(var(--sidebar-width)*-1);
+    transition: all .1s linear 0s;
+}
+
+.main{
+    width: 100%;
+    height: 100%;
+}
+
+.main.hidden{
+    left: var(--sidebar-width);
+}
+
+.topbar {
+    padding-left: 7px;
+    font-size: 8px;
+    width: 100%;
+    height: 25px;
+    float: left;
+    position: absolute;
+    vertical-align: middle;
+    display: flex; align-items: center;
+}
+
+.topbar .control {
+    display: flex; align-items: center;
+    width: 60%;
+}
+
+.topbar .stats {
+    display: flex; align-items: center;
+    margin-right: 15px;
+    margin-left: auto;
+}
+
+.topbar .stats .label {
+    border-radius:2px;
+    border: none;
+    background-color: var(--palette-light-grey);
+    color: var(--palette-grey);
+    padding: 2px 4px;
+    width: 55px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.topbar .button {
+    background-color: var(--palette-light-grey);
+    border: none;
+    color: var(--palette-grey);
+    padding: 2px 4px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 2px;
+    margin-right: 1px;
+    margin-left: 1px;
+    vertical-align: middle;
+    align-items: center;
+}
+
+.topbar .button.active {
+    background-color: var(--palette-grey);
+    color: white;
+}
+
+.topbar .label {
+    font-size: 12px;
+    margin-right:3px;
+}
+
+.topbar .label.bold{
+    font-size: 16px;
+    font-weight:300;
+    margin-right:3px;
+}
+
+.spacer {
+    width: 10px;
 }
 
 html, body {
@@ -15,6 +125,16 @@ html, body {
     padding: 0;
     margin: 0;
     overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+}
+
+#chart {
     width: 100%;
     height: 100%;
 }

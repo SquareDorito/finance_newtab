@@ -1,14 +1,14 @@
 const createCandlestickChart = data => {
-    const margin = { top: 25, right: 25, bottom: 40, left: 40 };
+    const margin = { top: 50, right: 25, bottom: 40, left: 40 };
     const width = window.innerWidth - margin.left - margin.right; // Use the window's width
     const height = window.innerHeight - margin.top - margin.bottom; // Use the window's height
 
     // find data range
-    const xMin = d3.min(data, d => {
+    let xMin = d3.min(data, d => {
         return d['date'];
     });
 
-    const xMax = d3.max(data, d => {
+    let xMax = d3.max(data, d => {
         return d['date'];
     });
 
@@ -19,11 +19,12 @@ const createCandlestickChart = data => {
     const yMax = d3.max(data, d => {
         return d['high'];
     });
-
     // scale using range
+    xMin = new Date(xMin-resolution_dict[resolution]);
+    xMax = new Date(xMax+resolution_dict[resolution]);
     const xScale = d3
         .scaleTime()
-        .domain([xMin-1000*period_dict['D'], xMax])
+        .domain([xMin, xMax])
         .range([0, width]);
 
     const yScale = d3
@@ -33,7 +34,7 @@ const createCandlestickChart = data => {
 
     // add chart SVG to the page
     const svg = d3
-        .select('#chart')
+        .selectAll('#chart')
         .append('svg')
         .attr('width', width + margin['left'] + margin['right'])
         .attr('height', height + margin['top'] + margin['bottom'])
@@ -244,19 +245,35 @@ const createCandlestickChart = data => {
         .attr("width", 1)
         .attr("id", (_, i) => { return "band" + i; })
         .style("stroke-width", xBand.bandwidth());
+    
+    default_data(data);
+
     d3.selectAll(".bands").selectAll(".band")
         .on("mouseover", function (_, i) {
             d3.select(this).classed("hoved", true);
             d3.select("#stem" + i).classed("hoved", true);
             d3.select("#candle" + i).classed("hoved", true);
             d3.select("#volume" + i).classed("hoved", true);
-            // displayGen(i);
+            d3.select("#date-label").html(data[i].date.toLocaleDateString())
+            d3.select("#o-label").html("O: "+data[i].open);
+            d3.select("#h-label").html("H: "+data[i].high);
+            d3.select("#l-label").html("L: "+data[i].low);
+            d3.select("#c-label").html("C: "+data[i].close);
         })
         .on("mouseout", function (_, i) {
             d3.select(this).classed("hoved", false);
             d3.select("#stem" + i).classed("hoved", false);
             d3.select("#candle" + i).classed("hoved", false);
             d3.select("#volume" + i).classed("hoved", false);
-            // displayGen(genData.length-1);
+            default_data(data);
         });
 };
+
+function default_data(data){
+    l = data.length-1
+    d3.select("#date-label").html(data[l].date.toLocaleDateString());
+    d3.select("#o-label").html("O: "+data[l].open);
+    d3.select("#h-label").html("H: "+data[l].high);
+    d3.select("#l-label").html("L: "+data[l].low);
+    d3.select("#c-label").html("C: "+data[l].close);
+}
