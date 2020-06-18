@@ -8,7 +8,7 @@ function createCandlestickChart(cs_data, layout_id, chart_id) {
     identity = layout_id+"-"+chart_id;
 
     const candleChart = data => {
-        const margin = { top: 50, right: 25, bottom: 40, left: 40 };
+        const margin = { top: 50, right: 25, bottom: 40, left: 55 };
         const width = window.innerWidth - margin.left - margin.right; // Use the window's width
         const height = window.innerHeight - margin.top - margin.bottom; // Use the window's height
         // find data range
@@ -43,7 +43,7 @@ function createCandlestickChart(cs_data, layout_id, chart_id) {
 
         // add chart SVG to the page
         // console.log('#chart'+layout_id+"-"+chart_id);
-        // console.log(width + margin['left'] + margin['right']);
+        // console.log(width + margin['left'] + margin['right']);\
         $('#chart'+identity).empty();
 
         const svg = d3
@@ -61,7 +61,6 @@ function createCandlestickChart(cs_data, layout_id, chart_id) {
             .attr('id', 'xAxis')
             .attr('class', 'axis')
             .attr('transform', `translate(0, ${height})`)
-            .style("font-size", "10px")
             .style("font-weight", "100")
             // .style('stroke', primary_color)
             .style('color', primary_color)
@@ -71,7 +70,6 @@ function createCandlestickChart(cs_data, layout_id, chart_id) {
             .append('g')
             .attr('id', 'yAxis')
             .attr('class', 'axis')
-            .style("font-size", "10px")
             .style("font-weight", "100")
             .style('color', primary_color)
             .call(d3.axisLeft(yScale).ticks(Math.floor(height / 50)));
