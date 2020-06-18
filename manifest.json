@@ -4,8 +4,8 @@
     "description": "A chrome extension that replaces the NewTab page with a customizable view of stock charts.",
     "version": "1.0",
     "permissions" : [
-        "management",
         "storage",
+        "management",
         "activeTab",
         "tabs",
         "http://localhost/*"
@@ -16,4 +16,5 @@
     "web_accessible_resources": [
         "css/index.css"
     ],
+    "content_security_policy": "script-src 'self' https://ajax.googleapis.com https://d3js.org https://finnhub.io; object-src 'self'"
  }

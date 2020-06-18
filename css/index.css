@@ -1,8 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&display=swap');
 
 :root {
+    --palettte-off-white: #f9f9f9;
     --palette-light-grey: #D3D3D3;
-    --palette-transparent-grey: #d3d3d31d;
+    --palette-transparent-grey: #d3d3d33d;
     --palette-dark-grey: #373737;
     --palette-almost-black: #060D13;
     --palette-grey: #6f6f6f;
@@ -10,8 +11,33 @@
     /* --palette-grey: #a5a5a5; */
 }
 
+.layout-options {
+}
+
+.layout-options .button {
+    background-color: var(--palette-light-grey);
+    cursor: pointer;
+    display: block;
+    width: 50%;
+    padding: 5px 10px;
+    color: var(--palette-dark-grey);
+    border: 1px solid black;
+    text-decoration: none;
+    margin: 0 auto;
+}
+
+.layout-options .button.active{
+    background-color: var(--palette-dark-grey);
+    color: white;
+}
+
+.layout-options .button:not(:last-child) {
+    border-bottom: none; /* Prevent double borders */
+}
+
 .logo-container {
-    
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .logo-container h1 {
@@ -25,14 +51,15 @@
     position: absolute;
     top: 0;
     padding: 0;
-    background-color: var(--palette-dark-grey);
+    background-color: var(--palettte-off-white);
+    border-right: 1px solid var(--palette-dark-grey);
     z-index: 10;
     width: var(--sidebar-width);
     height: 100%;
     transition: all .1s linear 0s;
-    padding: 5px;
+    padding: 10px 10px;
     box-sizing: border-box;
-    color: white;
+    color: var(--palette-dark-grey);
 }
 
 .sidebar.hidden{
@@ -51,7 +78,7 @@
 
 .topbar {
     padding-left: 7px;
-    font-size: 8px;
+    font-size: 10px;
     width: 100%;
     height: 25px;
     float: left;
@@ -111,7 +138,7 @@
 
 .topbar .label.bold{
     font-size: 16px;
-    font-weight:300;
+    font-weight:600;
     margin-right:3px;
 }
 
@@ -146,6 +173,10 @@ html, body {
 .full {
     width: 100%;
     height: 100%;
+}
+
+.layout.hidden{
+    display:none!important;
 }
 
 .quadrant {
