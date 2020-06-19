@@ -1,14 +1,38 @@
 function createCandlestickChart(cs_data, layout_id, chart_id) {
 
-    cs_data = cs_data.map(function (d) {
-        d.date = new Date(d.date * 1000);
-        return d;
-    });
+    identity = layout_id + "-" + chart_id;
 
-    identity = layout_id+"-"+chart_id;
+    const responsivefy = svg => {
+        // get container + svg aspect ratio
+        const container = d3.select(svg.node().parentNode),
+            width = parseInt(svg.style('width')),
+            height = parseInt(svg.style('height')),
+            aspect = width / height;
+
+        // get width of container and resize svg to fit it
+        const resize = () => {
+            var targetWidth = parseInt(container.style('width'));
+            svg.attr('width', targetWidth);
+            svg.attr('height', Math.round(targetWidth / aspect));
+        };
+
+        // add viewBox and preserveAspectRatio properties,
+        // and call resize so that svg resizes on inital page load
+        svg
+            .attr('viewBox', '0 0 ' + width + ' ' + height)
+            .attr('perserveAspectRatio', 'xMinYMid')
+            .call(resize);
+
+        // to register multiple listeners for same event type,
+        // you need to add namespace, i.e., 'click.foo'
+        // necessary if you call invoke this function for multiple svgs
+        // api docs: https://github.com/mbostock/d3/wiki/Selections#on
+        d3.select(window).on('resize.' + container.attr('id'), resize);
+    };
+
 
     const candleChart = data => {
-        const margin = { top: 50, right: 25, bottom: 40, left: 55 };
+        const margin = margin_dict[layout_id];
         const width = window.innerWidth - margin.left - margin.right; // Use the window's width
         const height = window.innerHeight - margin.top - margin.bottom; // Use the window's height
         // find data range
@@ -44,10 +68,10 @@ function createCandlestickChart(cs_data, layout_id, chart_id) {
         // add chart SVG to the page
         // console.log('#chart'+layout_id+"-"+chart_id);
         // console.log(width + margin['left'] + margin['right']);\
-        $('#chart'+identity).empty();
+        $('#chart' + identity).empty();
 
         const svg = d3
-            .select('#chart'+identity)
+            .select('#chart' + identity)
             .append('svg')
             .attr('width', width + margin['left'] + margin['right'])
             .attr('height', height + margin['top'] + margin['bottom'])
@@ -62,7 +86,6 @@ function createCandlestickChart(cs_data, layout_id, chart_id) {
             .attr('class', 'axis')
             .attr('transform', `translate(0, ${height})`)
             .style("font-weight", "100")
-            // .style('stroke', primary_color)
             .style('color', primary_color)
             .call(d3.axisBottom(xScale));
 
@@ -88,78 +111,6 @@ function createCandlestickChart(cs_data, layout_id, chart_id) {
         //       .tickSize(-width)
         //       .tickFormat("")
         //   )
-
-        //returs insertion point
-        const bisectDate = d3.bisector(d => d.date).left;
-
-        /* mouseover function to generate crosshair */
-        function generateCrosshair() {
-            //returns corresponding value from the domain
-            const correspondingDate = xScale.invert(d3.mouse(this)[0]);
-            //gets insertion point
-            const i = bisectDate(data, correspondingDate, 1);
-            const d0 = data[i - 1];
-            const d1 = data[i];
-            const currentPoint =
-                correspondingDate - d0['date'] > d1['date'] - correspondingDate ? d1 : d0;
-            focus.attr(
-                'transform',
-                `translate(${xScale(currentPoint['date'])}, ${yScale(
-                    currentPoint['close']
-                )})`
-            );
-
-            focus
-                .select('line.x')
-                .attr('x1', 0)
-                .attr('x2', width - xScale(currentPoint['date']))
-                .attr('y1', 0)
-                .attr('y2', 0);
-
-            focus
-                .select('line.y')
-                .attr('x1', 0)
-                .attr('x2', 0)
-                .attr('y1', 0)
-                .attr('y2', height - yScale(currentPoint['close']));
-
-            // updates the legend to display the date, open, close, high, low, and volume of the selected mouseover area
-            updateLegends(currentPoint);
-        }
-
-        /* Legends */
-        const updateLegends = currentData => {
-            d3.selectAll('.lineLegend').remove();
-
-            const legendKeys = Object.keys(data[0]);
-            const lineLegend = svg
-                .selectAll('.lineLegend')
-                .data(legendKeys)
-                .enter()
-                .append('g')
-                .attr('class', 'lineLegend')
-                .attr('transform', (d, i) => {
-                    return `translate(0, ${i * 20})`;
-                });
-            lineLegend
-                .append('text')
-                .text(d => {
-                    if (d === 'date') {
-                        return `${d}: ${currentData[d].toLocaleDateString()}`;
-                    } else if (
-                        d === 'high' ||
-                        d === 'low' ||
-                        d === 'open' ||
-                        d === 'close'
-                    ) {
-                        return `${d}: ${currentData[d].toFixed(2)}`;
-                    } else {
-                        return `${d}: ${currentData[d]}`;
-                    }
-                })
-                .style('fill', primary_color)
-                .attr('transform', 'translate(0,100)'); //align texts with boxes
-        };
 
         /* Volume series bars */
         const yMinVolume = d3.min(data, d => {
@@ -257,15 +208,15 @@ function createCandlestickChart(cs_data, layout_id, chart_id) {
             .attr("id", (_, i) => { return "band" + identity + "-" + i; })
             .style("stroke-width", xBand.bandwidth());
 
-        let this_container = d3.select("#container"+identity);
-        
+        let this_container = d3.select("#container" + identity);
+
         function default_data(data) {
             l = data.length - 1
-            this_container.select("#date-label").html(data[l].date.toLocaleDateString());
-            this_container.select("#o-label").html("O: " + data[l].open);
-            this_container.select("#h-label").html("H: " + data[l].high);
-            this_container.select("#l-label").html("L: " + data[l].low);
-            this_container.select("#c-label").html("C: " + data[l].close);
+            this_container.select("#date-label").html(shortenedDateString(data[l].date))
+            this_container.select("#o-label").html("O: " + data[l].open.toFixed(2));
+            this_container.select("#h-label").html("H: " + data[l].high.toFixed(2));
+            this_container.select("#l-label").html("L: " + data[l].low.toFixed(2));
+            this_container.select("#c-label").html("C: " + data[l].close.toFixed(2));
         }
 
         default_data(data);
@@ -275,11 +226,11 @@ function createCandlestickChart(cs_data, layout_id, chart_id) {
                 this_container.select("#stem" + i).classed("hoved", true);
                 this_container.select("#candle" + i).classed("hoved", true);
                 this_container.select("#volume" + i).classed("hoved", true);
-                this_container.select("#date-label").html(data[i].date.toLocaleDateString())
-                this_container.select("#o-label").html("O: " + data[i].open);
-                this_container.select("#h-label").html("H: " + data[i].high);
-                this_container.select("#l-label").html("L: " + data[i].low);
-                this_container.select("#c-label").html("C: " + data[i].close);
+                this_container.select("#date-label").html(shortenedDateString(data[i].date))
+                this_container.select("#o-label").html("O: " + data[i].open.toFixed(2));
+                this_container.select("#h-label").html("H: " + data[i].high.toFixed(2));
+                this_container.select("#l-label").html("L: " + data[i].low.toFixed(2));
+                this_container.select("#c-label").html("C: " + data[i].close.toFixed(2));
             })
             .on("mouseout", function (_, i) {
                 d3.select(this).classed("hoved", false);
@@ -289,8 +240,9 @@ function createCandlestickChart(cs_data, layout_id, chart_id) {
                 default_data(data);
             });
     };
-
-    
-
     candleChart(cs_data);
+}
+
+function shortenedDateString(date) {
+    return (date.getMonth() + 1) + "/" + date.getDate() + "/" + (date.getFullYear() % 100);
 }
