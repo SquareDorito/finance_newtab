@@ -51,6 +51,7 @@ function generateLayoutHTML(layout_id){
         if(layout_id in layout_dict){
             strings.push('<div class="'+layout_dict[layout_id][i]+'">');
         }
+        strings.push('<div class="loader-container hidden" id="loader'+me+'"><div class="loader"></div></div>');
         // container
         strings.push('<div class="container" id="container'+me+'">');
         // topbar generation
@@ -122,6 +123,8 @@ $(document).ready(function () {
             $(this).attr("disabled", "disabled");
             // $(this).val()
             var identity = $(this).attr('id');
+            $('#chart' + identity).empty();
+            $('#loader' + identity).removeClass('hidden');
             var currSymbol = $(this).val();
             var layout_id = identity.split("-")[0]
             var chart_id = identity.split("-")[1]
@@ -157,6 +160,8 @@ $(document).ready(function () {
         }
         var new_type = $(this).html();
         var identity = $(this).parent().attr('id');
+        $('#chart' + identity).empty();
+        $('#loader' + identity).removeClass('hidden');
         var layout_id = identity.split("-")[0];
         var chart_id = identity.split("-")[1];
 
@@ -204,6 +209,8 @@ $(document).ready(function () {
         if(!$(this).hasClass("active")){
             var new_interval = $(this).html();
             var identity = $(this).parent().attr('id');
+            $('#chart' + identity).empty();
+            $('#loader' + identity).removeClass('hidden');
             var layout_id = identity.split("-")[0];
             var chart_id = identity.split("-")[1];
             chrome.storage.local.get(identity, function (data) {
@@ -236,6 +243,8 @@ $(document).ready(function () {
         if(!$(this).hasClass("active")){
             var new_res = $(this).html();
             var identity = $(this).parent().attr('id');
+            $('#chart' + identity).empty();
+            $('#loader' + identity).removeClass('hidden');
             var layout_id = identity.split("-")[0];
             var chart_id = identity.split("-")[1];
             chrome.storage.local.get(identity, function (data) {
@@ -283,6 +292,8 @@ function handleLayout(layout) {
     // now get current symbols and plot
     for (let i = 0; i < layoutSymbolNum[layout]; i++) {
         let identity = layout+"-"+i;
+        $('#chart' + identity).empty();
+        $('#loader' + identity).removeClass('hidden');
         chrome.storage.local.get(identity, function (data) {
             if (typeof data[identity] === "undefined") {
                 var currSymbol = defaultSymbols[i];
@@ -404,4 +415,5 @@ function createChart(data, data_dict, layout_id, chart_id) {
     }else if(type=="Line"){
         createLineChart(data, layout_id, chart_id, resolution);
     }
+    $('#loader'+identity).addClass('hidden');
 }

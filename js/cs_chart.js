@@ -66,9 +66,6 @@ function createCandlestickChart(cs_data, layout_id, chart_id, resolution) {
             .range([height, 0]);
 
         // add chart SVG to the page
-        // console.log('#chart'+layout_id+"-"+chart_id);
-        // console.log(width + margin['left'] + margin['right']);\
-        $('#chart' + identity).empty();
 
         const svg = d3
             .select('#chart' + identity)

@@ -82,7 +82,6 @@ function createLineChart(line_data, layout_id, chart_id, resolution) {
             .domain([yMin - 5, yMax])
             .range([height, 0]);
 
-        $('#chart' + identity).empty();
         // add chart SVG to the page
         const svg = d3
             .select('#chart' + identity)
