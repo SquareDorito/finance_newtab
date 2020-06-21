@@ -293,7 +293,7 @@ html, body {
       stroke-width: 0;
 }
 
-.chart-type-group {
+.button-group {
     display: flex;
     align-items: center;
 }

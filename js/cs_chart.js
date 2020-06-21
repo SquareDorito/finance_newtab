@@ -1,4 +1,4 @@
-function createCandlestickChart(cs_data, layout_id, chart_id) {
+function createCandlestickChart(cs_data, layout_id, chart_id, resolution) {
 
     identity = layout_id + "-" + chart_id;
 
@@ -38,11 +38,11 @@ function createCandlestickChart(cs_data, layout_id, chart_id) {
         // find data range
 
         let xMin = d3.min(data, d => {
-            return d['date'];
+            return d['date'].getTime();
         });
 
         let xMax = d3.max(data, d => {
-            return d['date'];
+            return d['date'].getTime();
         });
 
         const yMin = d3.min(data, d => {
@@ -53,8 +53,8 @@ function createCandlestickChart(cs_data, layout_id, chart_id) {
             return d['high'];
         });
         // scale using range
-        xMin = new Date(xMin - resolution_dict[global_resolution]);
-        xMax = new Date(xMax + resolution_dict[global_resolution]);
+        xMin = new Date(xMin - 1*resolution_dict[resolution]);
+        xMax = new Date(xMax + 1*resolution_dict[resolution]);
         const xScale = d3
             .scaleTime()
             .domain([xMin, xMax])
@@ -130,7 +130,7 @@ function createCandlestickChart(cs_data, layout_id, chart_id) {
             .append('g')
             .attr('class', 'volumes')
 
-        let xBand = d3.scaleBand().domain(d3.range(-1, data.length)).range([0, width]).padding(0.4)
+        let xBand = d3.scaleBand().domain(d3.range(0, data.length)).range([0, width]).padding(0.5)
 
         volumes
             .selectAll()

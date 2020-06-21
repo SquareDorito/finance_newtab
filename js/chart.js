@@ -1,4 +1,4 @@
-function createLineChart(line_data, layout_id, chart_id) {
+function createLineChart(line_data, layout_id, chart_id, resolution) {
 
     identity = layout_id + "-" + chart_id;
 
@@ -69,8 +69,8 @@ function createLineChart(line_data, layout_id, chart_id) {
             return d['close'];
         });
 
-        xMin = new Date(xMin - resolution_dict[global_resolution]);
-        xMax = new Date(xMax + resolution_dict[global_resolution]);
+        xMin = new Date(xMin - resolution_dict[resolution]);
+        xMax = new Date(xMax + resolution_dict[resolution]);
         // scale using range
         const xScale = d3
             .scaleTime()
@@ -135,7 +135,7 @@ function createLineChart(line_data, layout_id, chart_id) {
             .domain([yMinVolume, yMaxVolume])
             .range([height, height * (3 / 4)]);
 
-        let xBand = d3.scaleBand().domain(d3.range(-1, data.length)).range([0, width]).padding(0.3)
+        let xBand = d3.scaleBand().domain(d3.range(-1, data.length)).range([0, width]).padding(0.5)
         svg
             .selectAll()
             .data(volData)
