@@ -2,6 +2,7 @@
 
 let interval_dict = {}
 interval_dict['1Y'] = 365*24*60*60 // seconds in a year
+interval_dict['3M'] = 3*31*24*60*60 // seconds in 3 month
 interval_dict['1M'] = 31*24*60*60 // seconds in a month
 interval_dict['1W'] = 7*24*60*60 // seconds in a week
 interval_dict['1D'] = 24*60*60 // seconds in a week
@@ -20,6 +21,7 @@ let margin_dict = {}
 margin_dict[0] = { top: 40, right: 25, bottom: 40, left: 45 }
 margin_dict[1] = { top: 50, right: 25, bottom: 40, left: 55 }
 
+// colors
 let light_grey = "#D3D3D3";
 let dark_grey = "#373737";
 let grey = "#6f6f6f";
@@ -34,10 +36,11 @@ let dark_mode = false;
 if(dark_mode){
     primary_color = light_grey;
 }
-let numLayouts = 2;
-let layoutSymbolNum = [1, 4]
+
 let chart_types = ['Candle', 'Line']
 
+let numLayouts = 2;
+let layoutSymbolNum = [1, 4]
 let layout_dict = {};
 layout_dict[1] = ['quadrant top-left', 'quadrant top-right', 'quadrant bottom-left', 'quadrant bottom-right'];
 let layout_size_dict = {};
@@ -62,16 +65,16 @@ function generateLayoutHTML(layout_id){
         strings.push('<div class="button-group" id="'+me+'">');
         strings.push('<div class="label">Interval:</div>');
         strings.push('<a class="button interval" id="interval1D-'+me+'" href="#">1D</a>');
-        strings.push('<a class="button interval" id="interval1W-'+me+'" href="#">1W</a>');
         strings.push('<a class="button interval" id="interval1M-'+me+'" href="#">1M</a>');
+        strings.push('<a class="button interval" id="interval3M-'+me+'" href="#">3M</a>');
         strings.push('<a class="button interval" id="interval1Y-'+me+'" href="#">1Y</a>');
         strings.push('</div>'); // button-group
         strings.push('<div class="spacer"></div>');
         strings.push('<div class="button-group" id="'+me+'">');
         strings.push('<div class="label">Resolution:</div>');
-        strings.push('<a class="button resolution" id="resolution1-'+me+'" href="#">1</a>');
-        strings.push('<a class="button resolution" id="resolution5-'+me+'" href="#">5</a>');
-        strings.push('<a class="button resolution" id="resolution30-'+me+'" href="#">30</a>');
+        // strings.push('<a class="button resolution" id="resolution1-'+me+'" href="#">1</a>');
+        // strings.push('<a class="button resolution" id="resolution5-'+me+'" href="#">5</a>');
+        // strings.push('<a class="button resolution" id="resolution30-'+me+'" href="#">30</a>');
         strings.push('<a class="button resolution" id="resolution60-'+me+'" href="#">60</a>');
         strings.push('<a class="button resolution" id="resolutionD-'+me+'" href="#">D</a>');
         strings.push('</div>'); // button-group
@@ -105,10 +108,12 @@ let defaultSymbols = ['AAPL', 'AMZN', 'GOOG', 'MSFT']
 
 $(document).ready(function () {
     console.log("ready!");
+
     // generate HTML for the layouts
     for(var i=0; i<numLayouts; i++){
         generateLayoutHTML(i);
     }
+
     // pressing esc toggles menu
     $(document).keyup(function(e) {
         if(e.keyCode==27){
@@ -238,7 +243,7 @@ $(document).ready(function () {
         }
     });
 
-    // change interval on button press
+    // change resolution on button press
     $(".button.resolution").click(function(e) {
         if(!$(this).hasClass("active")){
             var new_res = $(this).html();
@@ -348,15 +353,12 @@ function getAndStoreData(data_dict, layout_id, symbol_id) {
         type: "GET",
         success: function (resp) {
             data = reformatData(resp);
-            var to_store = {}
             var last_time = new Date().getTime(); 
-            to_store[symbol+"-"+resolution] = {
+            var to_store = {
                 data: data,
                 last_time: last_time
             }
-            chrome.storage.local.set(to_store, function () {
-                createChart(data, data_dict, layout_id, symbol_id);
-            });
+            fifo_store(symbol+"-"+resolution, to_store, createChart, [data, data_dict, layout_id, symbol_id]);
         },
         error: function (e, s, t) {
             console.log("Error with _get_data");
@@ -416,4 +418,43 @@ function createChart(data, data_dict, layout_id, chart_id) {
         createLineChart(data, layout_id, chart_id, resolution);
     }
     $('#loader'+identity).addClass('hidden');
+}
+
+function fifo_store(key, value, callback, params) {
+    var to_store = {}
+    to_store[key] = value
+    chrome.storage.local.set(to_store, function () {
+        if(chrome.runtime.lastError) {
+            if(chrome.runtime.lastError.message=='QUOTA_BYTES quota exceeded'){
+                // if full, remove the oldest item and retry
+                chrome.storage.local.get("fifo_keys", function(data) {
+                    var fifo_keys = data["fifo_keys"]
+                    if (typeof fifo_keys === "undefined") {
+                        chrome.storage.local.set({fifo_keys: []});
+                    } else {
+                        var key_to_del = fifo_keys.shift();
+                        console.log("Removing (key: " + key_to_del + ") from fifo_keys.");
+                        console.log(fifo_keys);
+                        chrome.storage.local.set({fifo_keys: fifo_keys});
+                        chrome.storage.local.remove(key_to_del, function() {
+                            fifo_store(key, value, callback, params);
+                        });
+                    }
+                });
+            }
+        } else {
+            // no error, just store
+            chrome.storage.local.get("fifo_keys", function(data) {
+                var fifo_keys = data["fifo_keys"]
+                if (typeof fifo_keys === "undefined") {
+                    fifo_keys= []
+                }
+                fifo_keys.push(key);
+                console.log("Pushed (key: " + key + ") to fifo_keys.");
+                console.log(fifo_keys);
+                chrome.storage.local.set({fifo_keys: fifo_keys});
+                callback(...params)        
+            });
+        }
+    });
 }

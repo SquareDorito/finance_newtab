@@ -34,7 +34,7 @@ function createLineChart(line_data, layout_id, chart_id, resolution) {
         };
 
         // add viewBox and preserveAspectRatio properties,
-    // and call resize so that svg resizes on inital page load
+        // and call resize so that svg resizes on inital page load
         svg
             .attr('viewBox', '0 0 ' + width + ' ' + height)
             .attr('perserveAspectRatio', 'xMinYMid')
