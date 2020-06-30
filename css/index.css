@@ -100,6 +100,38 @@
     white-space: nowrap;
 }
 
+.two-label {
+    width: 80px;
+    margin-right: 3px;
+    display: flex;
+    vertical-align: middle;
+}
+
+.two-label .first {
+    width: 16px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 4px;
+    padding-right: 1px;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+    background-color: var(--palette-grey);
+    color: var(--palette-light-grey);
+}
+
+.two-label .second {
+    width: calc(80px - 20px);
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 4px;
+    overflow: hidden;
+    white-space: nowrap;
+    background-color: var(--palette-light-grey);
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    color: var(--palette-grey);
+}
+
 .topbar .label.bold{
     font-size: 20px;
     font-weight:600;
@@ -111,15 +143,17 @@ input[type=text].symbol {
     text-transform: uppercase;
     font-size: 20px;
     font-weight: 600;
-    border: 1px solid transparent!important;
+    border-radius: 5px;
+    border: 1px solid var(--palette-light-grey)!important;
     text-align: center;
     width: 65px;
+    padding-top: 3px;
 }
 
 input[type=text].symbol:focus {
     outline: none;
     border-radius: 5px;
-    border: 1px solid var(--palette-light-grey)!important;
+    border: 1px solid var(--palette-dark-grey)!important;
 }
 
 .topbar .control {
@@ -183,6 +217,37 @@ input[type=text].symbol:focus {
     white-space: nowrap;
 }
 
+.topbar.small .two-label {
+    width: 64px;
+    margin-right: 3px;
+    display: flex;
+    vertical-align: middle;
+}
+
+.topbar.small .two-label .first {
+    width: 14px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 4px;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+    background-color: var(--palette-grey);
+    color: var(--palette-light-grey);
+}
+
+.topbar.small .two-label .second {
+    width: calc(64px - 18px);
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 3px;
+    overflow: hidden;
+    white-space: nowrap;
+    background-color: var(--palette-light-grey);
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    color: var(--palette-grey);
+}
+
 .topbar.small .label.bold{
     font-size: 16px;
     font-weight:600;
@@ -194,6 +259,7 @@ input[type=text].symbol:focus {
     text-transform: uppercase;
     font-size: 16px;
     font-weight: 600;
+    padding-top: 3px;
     width: 50px;
 }
 
@@ -223,7 +289,7 @@ html, body {
 
 .axis {
     shape-rendering: crispEdges;
-    font-size: 16px;
+    font-size: 10px;
 }
 
 #layout0 .axis {
@@ -233,18 +299,77 @@ html, body {
 .full {
     width: 100%;
     height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
 }
 
 .layout.hidden{
     display:none!important;
 }
 
+.vertical-half {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    display: flex; align-items: center;
+}
+
+.vertical-75 {
+    position: absolute;
+    width: 75%;
+    height: 100%;
+    display: flex; align-items: center;
+}
+
+.horizontal-half {
+    position: absolute;
+    width: 100%;
+    height: 50%;
+    display: flex; align-items: center
+}
+
+.horizontal-half.bottom{
+    top: 50%;
+}
+
+.horizontal-half.top{
+    top: 0;
+    border-bottom: 1px solid var(--palette-light-grey);
+}
+
 .quadrant {
     position: absolute;
     width: 50%;
     height: 50%;
-    border: 1px solid var(--palette-transparent-grey);
-    display: flex; align-items: center
+    display: flex; align-items: center;
+}
+
+.quadrant-25 {
+    position: absolute;
+    width: 25%;
+    height: 50%;
+    display: flex; align-items: center;
+}
+
+.quadrant-25.top-right{ 
+    left: 75%;
+    top: 0;
+}
+
+.quadrant-25.bottom-right{ 
+    left: 75%;
+    top: 50%;
+}
+
+.quadrant.top-left {
+    border-bottom: 1px solid var(--palette-light-grey);
+    border-right: 1px solid var(--palette-light-grey);
+}
+
+.quadrant.bottom-right {
+    border-top: 1px solid var(--palette-light-grey);
+    border-left: 1px solid var(--palette-light-grey);
 }
 
 .border {
@@ -287,7 +412,6 @@ html, body {
 
 .grid .tick line {
     stroke: lightgrey;
-    opacity: 0.7;
 }
 .grid path {
       stroke-width: 0;
@@ -323,4 +447,95 @@ html, body {
 
 .loader-container.hidden{
     display: none;
+}
+
+.layout-options {
+    width: 100%;
+    display: block; align-items: center;
+}
+
+.layout-button {
+    padding: 10px 5px;
+    /* width: 100%; */
+    height: 100%;
+    text-align: center;
+    display: inline-block;
+    margin-bottom: 15px;
+    cursor: pointer;
+    background-color: var(--palette-light-grey);
+    border-radius: 5px;
+}
+
+.layout-label {
+    text-align: center;
+    display: inline-block;
+    padding: 4px 10px;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.layout-button.active {
+    background-color: var(--palette-dark-grey);
+    color: var(--palette-light-grey);
+}
+
+.layout-0 {
+    width: 150px;
+    height: 100px;
+    border-radius: 2px;
+    border: 1px solid var(--palette-grey);
+    margin: 0 auto;
+}
+
+.layout-1 {
+    width: 150px;
+    height: 100px;
+    border-radius: 2px;
+    border: 1px solid var(--palette-grey);
+    margin: 0 auto;
+}
+
+.layout-1 .half {
+    width: 100%;
+    height: 50%;
+    border-bottom: 1px solid var(--palette-grey);
+}
+
+.layout-2 {
+    width: 150px;
+    height: 100px;
+    border-radius: 2px;
+    border: 1px solid var(--palette-grey);
+    margin: 0 auto;
+    position: relative;
+}
+
+.layout-2 .q-top-left {
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    top: 0;
+    left: 0;
+    border-bottom: 1px solid var(--palette-grey);
+    border-right: 1px solid var(--palette-grey);
+}
+
+.layout-2 .q-bottom-right {
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    top: 50%;
+    left: 50%;
+    border-top: 1px solid var(--palette-grey);
+    border-left: 1px solid var(--palette-grey);
+}
+
+#reset {
+    margin-top: 100px;
+    background-color: #e08c87;
+    border: none;
+    border-radius: 5px;
+    color: var(--palette-dark-grey);
+    width: 50px;
+    padding: 5px 5px;
 }

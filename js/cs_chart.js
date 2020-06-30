@@ -8,6 +8,7 @@ function createCandlestickChart(cs_data, layout_id, chart_id, resolution) {
             width = parseInt(svg.style('width')),
             height = parseInt(svg.style('height')),
             aspect = width / height;
+        // console.log(identity + " | " + width + " | " + height);
 
         // get width of container and resize svg to fit it
         const resize = () => {
@@ -32,9 +33,11 @@ function createCandlestickChart(cs_data, layout_id, chart_id, resolution) {
 
 
     const candleChart = data => {
-        const margin = margin_dict[layout_id];
-        const width = window.innerWidth - margin.left - margin.right; // Use the window's width
-        const height = window.innerHeight - margin.top - margin.bottom; // Use the window's height
+        const margin = margin_dict[layout_id][chart_id];
+        let container_width = $("#container"+identity).width();
+        let container_height = $("#container"+identity).height();
+        const width = container_width - margin.left - margin.right;
+        const height = container_height - margin.top - margin.bottom;
         // find data range
 
         let xMin = d3.min(data, d => {
@@ -210,10 +213,10 @@ function createCandlestickChart(cs_data, layout_id, chart_id, resolution) {
         function default_data(data) {
             l = data.length - 1
             this_container.select("#date-label").html(shortenedDateString(data[l].date))
-            this_container.select("#o-label").html("O: " + data[l].open.toFixed(2));
-            this_container.select("#h-label").html("H: " + data[l].high.toFixed(2));
-            this_container.select("#l-label").html("L: " + data[l].low.toFixed(2));
-            this_container.select("#c-label").html("C: " + data[l].close.toFixed(2));
+            this_container.select("#o-label").html(data[l].open.toFixed(2));
+            this_container.select("#h-label").html(data[l].high.toFixed(2));
+            this_container.select("#l-label").html(data[l].low.toFixed(2));
+            this_container.select("#c-label").html(data[l].close.toFixed(2));
         }
 
         default_data(data);
@@ -224,10 +227,10 @@ function createCandlestickChart(cs_data, layout_id, chart_id, resolution) {
                 this_container.select("#candle" + i).classed("hoved", true);
                 this_container.select("#volume" + i).classed("hoved", true);
                 this_container.select("#date-label").html(shortenedDateString(data[i].date))
-                this_container.select("#o-label").html("O: " + data[i].open.toFixed(2));
-                this_container.select("#h-label").html("H: " + data[i].high.toFixed(2));
-                this_container.select("#l-label").html("L: " + data[i].low.toFixed(2));
-                this_container.select("#c-label").html("C: " + data[i].close.toFixed(2));
+                this_container.select("#o-label").html(data[i].open.toFixed(2));
+                this_container.select("#h-label").html(data[i].high.toFixed(2));
+                this_container.select("#l-label").html(data[i].low.toFixed(2));
+                this_container.select("#c-label").html(data[i].close.toFixed(2));
             })
             .on("mouseout", function (_, i) {
                 d3.select(this).classed("hoved", false);

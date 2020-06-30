@@ -4,6 +4,7 @@
 <head>
     <title>Finance NewTab</title>
     <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/start.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="js/chart.js"></script>
@@ -12,13 +13,47 @@
 </head>
 
 <body>
+    <section class="setup hidden" id="enter-key">
+        <h1> Welcome to Finance NewTab</h1>
+        <p>
+            Register for a free Finnhub account and paste your API key below.
+        </p>
+        <div class="group">
+            <input id="input-api" type="text" required>
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>Finnhub API Key</label>
+          </div>
+    </section>
     <div class="sidebar hidden">
         <div class="logo-container">
             <h1> Finance NewTab </h1>
         </div>
         <div class="layout-options">
-            <a class="button" href="#" id='0'>Layout 1</a>
-            <a class="button" href="#" id='1'>Layout 2</a>
+            <center>
+                <div class="layout-button" id='0'>
+                    <div class="layout-0"></div>
+                    <div class="layout-label">Layout 0</div>
+                </div>
+            </center>
+            <center>
+                <div class="layout-button" id='1'>
+                    <div class="layout-1">
+                        <div class="half"></div>
+                    </div>
+                    <div class="layout-label">Layout 1</div>
+                </div>
+            </center>
+            <center>
+                <div class="layout-button" id='2'>
+                    <div class="layout-2">
+                        <div class="q-top-left"></div>
+                        <div class="q-bottom-right"></div>
+                    </div>
+                    <div class="layout-label">Layout 2</div>
+                </div>
+            </center>
+            <center><a class="button" href="#" id='reset'> Reset</a></center>
         </div>
     </div>
     <div class="main"></div>

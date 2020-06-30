@@ -18,8 +18,16 @@ resolution_dict['5']  = 5*1000 // ms in 5 seconds
 resolution_dict['1']  = 1000 // ms in a second
 
 let margin_dict = {}
-margin_dict[0] = { top: 40, right: 25, bottom: 40, left: 45 }
-margin_dict[1] = { top: 50, right: 25, bottom: 40, left: 55 }
+margin_dict[0] = {}
+margin_dict[0][0] = { top: 40, right: 25, bottom: 40, left: 45 }
+margin_dict[1] = {}
+margin_dict[1][0] = { top: 30, right: 25, bottom: 30, left: 45 }
+margin_dict[1][1] = { top: 30, right: 25, bottom: 30, left: 45 }
+margin_dict[2] = {}
+margin_dict[2][0] = { top: 30, right: 15, bottom: 30, left: 45 }
+margin_dict[2][1] = { top: 30, right: 15, bottom: 30, left: 45 }
+margin_dict[2][2] = { top: 30, right: 15, bottom: 30, left: 45 }
+margin_dict[2][3] = { top: 30, right: 15, bottom: 30, left: 45 }
 
 // colors
 let light_grey = "#D3D3D3";
@@ -39,13 +47,16 @@ if(dark_mode){
 
 let chart_types = ['Candle', 'Line']
 
-let numLayouts = 2;
-let layoutSymbolNum = [1, 4]
+let numLayouts = 3;
+let layoutSymbolNum = [1, 2, 4]
 let layout_dict = {};
-layout_dict[1] = ['quadrant top-left', 'quadrant top-right', 'quadrant bottom-left', 'quadrant bottom-right'];
+layout_dict[0] = ['full']
+layout_dict[1] = ['horizontal-half top', 'horizontal-half bottom'];
+layout_dict[2] = ['quadrant top-left', 'quadrant top-right', 'quadrant bottom-left', 'quadrant bottom-right'];
 let layout_size_dict = {};
 layout_size_dict[0] = ['']
-layout_size_dict[1] = ['small', 'small', 'small', 'small']
+layout_size_dict[1] = ['small', 'small']
+layout_size_dict[2] = ['small', 'small', 'small', 'small']
 
 function generateLayoutHTML(layout_id){
     var strings = ['<div class="layout hidden" id="layout'+layout_id+'">']
@@ -86,11 +97,15 @@ function generateLayoutHTML(layout_id){
         strings.push('</div>'); // button-group
         strings.push('</div>'); // control
         strings.push('<div class="stats">');
-        strings.push('<div id="date-label" class="label">&nbsp;</div>');
-        strings.push('<div id="o-label" class="label">O:</div>');
-        strings.push('<div id="h-label" class="label">H:</div>');
-        strings.push('<div id="l-label" class="label">L:</div>');
-        strings.push('<div id="c-label" class="label">C:</div>');
+        strings.push('<div id="" class="two-label"><div class="first">D:</div><div id="date-label" class="second"></div></div>');
+        strings.push('<div id="" class="two-label"><div class="first">O:</div><div id="o-label" class="second"></div></div>');
+        strings.push('<div id="" class="two-label"><div class="first">H:</div><div id="h-label" class="second"></div></div>');
+        strings.push('<div id="" class="two-label"><div class="first">L:</div><div id="l-label" class="second"></div></div>');
+        strings.push('<div id="" class="two-label"><div class="first">C:</div><div id="c-label" class="second"></div></div>');
+        // strings.push('<div id="o-label" class="label">O:</div>');
+        // strings.push('<div id="h-label" class="label">H:</div>');
+        // strings.push('<div id="l-label" class="label">L:</div>');
+        // strings.push('<div id="c-label" class="label">C:</div>');
         strings.push('</div>'); // stats
         strings.push('</div>'); // toolbar
         strings.push('<div class="chart" id="chart'+me+'"></div>');
@@ -193,17 +208,17 @@ $(document).ready(function () {
         });
     });
     // change layout on menu button press
-    $(".layout-options .button").click(function(e) {
+    $(".layout-button").click(function(e) {
         if(!$(this).hasClass("active")){
             for(var i=0;i<numLayouts;i++){
                 // remove active from other buttons
-                if($(".layout-options .button#"+i).hasClass("active")){
-                    $(".layout-options .button#"+i).toggleClass("active");
-                    $("#layout" + i).toggleClass("hidden");
+                if($(".layout-button#"+i).hasClass("active")){
+                    $(".layout-button#"+i).removeClass("active");
+                    $("#layout" + i).addClass("hidden");
                 }
             }
             // now switch the layout
-            new_layout = parseInt(e.target.id);
+            new_layout = parseInt($(this).attr('id'));
             chrome.storage.local.set({ layout: new_layout}, function () {
                 handleLayout(new_layout);
             });
@@ -276,24 +291,66 @@ $(document).ready(function () {
 
         }
     });
-    
-    // generate charts in layout
-    chrome.storage.local.get("layout", function (data) {
-        if (typeof data["layout"] === "undefined") {
-            chrome.storage.local.set({ layout: 0 }, function () {
-                handleLayout(0);
+
+    $('#input-api').on('keypress', function (e) {
+        if (e.which === 13) {
+            //Disable textbox to prevent multiple submit
+            $(this).attr("disabled", "disabled");
+            var data_dict = {}
+            data_dict["finnhub-api-key"] = $(this).val();
+            chrome.storage.local.set(data_dict, function () {
+                
             });
-        } else {
-            handleLayout(data["layout"]);
+            $(this).removeAttr("disabled");
+            $('.setup').fadeOut(300, function(){
+                // generate charts in layout
+                chrome.storage.local.get("layout", function (data) {
+                    if (typeof data["layout"] === "undefined") {
+                        chrome.storage.local.set({ layout: 0 }, function () {
+                            handleLayout(0);
+                        });
+                    } else {
+                        handleLayout(data["layout"]);
+                    }
+                });
+            });
         }
     });
+
+    $('#reset').click(function(e) {
+        chrome.storage.local.clear(function() {
+            for(var i=0;i<numLayouts;i++){
+                $(".layout-button#"+i).removeClass("active");
+                $("#layout" + i).addClass("hidden");
+            }
+            $('.setup').fadeIn(300);
+        });
+    });
+
+    //  check if there is api key stored
+    chrome.storage.local.get("finnhub-api-key", function (data) { 
+        if (typeof data["finnhub-api-key"] === "undefined") {
+            $('.setup').removeClass('hidden');
+        } else {
+            // generate charts in layout
+            chrome.storage.local.get("layout", function (data) {
+                if (typeof data["layout"] === "undefined") {
+                    chrome.storage.local.set({ layout: 0 }, function () {
+                        handleLayout(0);
+                    });
+                } else {
+                    handleLayout(data["layout"]);
+                }
+            });
+        }
+    }); 
 });
 
 function handleLayout(layout) {
     // toggle current layout here
     // setup layout buttons
     $("#layout" + layout).toggleClass("hidden");
-    $(".layout-options .button#"+layout).toggleClass("active");
+    $(".layout-button#"+layout).toggleClass("active");
     // now get current symbols and plot
     for (let i = 0; i < layoutSymbolNum[layout]; i++) {
         let identity = layout+"-"+i;
@@ -347,26 +404,29 @@ function getAndStoreData(data_dict, layout_id, symbol_id) {
     var resolution = data_dict["resolution"]
     let now = new Date().getTime() / 1000 | 0;
     let old = now - interval_dict["1Y"];
-    let url = "https://finnhub.io/api/v1/stock/candle?symbol="+symbol+"&resolution=" + resolution + "&from=" + old.toString() + "&to=" + now.toString() + "&token=brhub4vrh5r807v5kllg";
-    $.ajax({
-        url: url,
-        type: "GET",
-        success: function (resp) {
-            data = reformatData(resp);
-            var last_time = new Date().getTime(); 
-            var to_store = {
-                data: data,
-                last_time: last_time
+    chrome.storage.local.get('finnhub-api-key', function(result) {
+        var api_key = result["finnhub-api-key"];
+        let url = "https://finnhub.io/api/v1/stock/candle?symbol="+symbol+"&resolution=" + resolution + "&from=" + old.toString() + "&to=" + now.toString() + "&token="+api_key;
+        $.ajax({
+            url: url,
+            type: "GET",
+            success: function (resp) {
+                data = reformatData(resp);
+                var last_time = new Date().getTime(); 
+                var to_store = {
+                    data: data,
+                    last_time: last_time
+                }
+                fifo_store(symbol+"-"+resolution, to_store, createChart, [data, data_dict, layout_id, symbol_id]);
+            },
+            error: function (e, s, t) {
+                console.log("Error with _get_data");
+                // if unable to get data, use old data
+                chrome.storage.local.get(symbol+"-"+resolution, function(tick_data) {
+                    createChart(tick_data[symbol+"-"+resolution]["data"], data_dict, layout_id, symbol_id);
+                });
             }
-            fifo_store(symbol+"-"+resolution, to_store, createChart, [data, data_dict, layout_id, symbol_id]);
-        },
-        error: function (e, s, t) {
-            console.log("Error with _get_data");
-            // if unable to get data, use old data
-            chrome.storage.local.get(symbol+"-"+resolution, function(tick_data) {
-                createChart(tick_data[symbol+"-"+resolution]["data"], data_dict, layout_id, symbol_id);
-            });
-        }
+        });
     });
 }
 

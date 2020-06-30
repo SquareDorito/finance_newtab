@@ -48,9 +48,11 @@ function createLineChart(line_data, layout_id, chart_id, resolution) {
     };
 
     const lineChart = data => {
-        const margin = margin_dict[layout_id];
-        const width = window.innerWidth - margin.left - margin.right; // Use the window's width
-        const height = window.innerHeight - margin.top - margin.bottom; // Use the window's height
+        const margin = margin_dict[layout_id][chart_id];
+        let container_width = $("#container"+identity).width();
+        let container_height = $("#container"+identity).height();
+        const width = container_width - margin.left - margin.right;
+        const height = container_height - margin.top - margin.bottom;
 
         // find data range
         let xMin = d3.min(data, d => {
@@ -280,10 +282,10 @@ function createLineChart(line_data, layout_id, chart_id, resolution) {
 
         function updateData(data_point) {
             this_container.select("#date-label").html(shortenedDateString(data_point.date))
-            this_container.select("#o-label").html("O: " + data_point.open.toFixed(2));
-            this_container.select("#h-label").html("H: " + data_point.high.toFixed(2));
-            this_container.select("#l-label").html("L: " + data_point.low.toFixed(2));
-            this_container.select("#c-label").html("C: " + data_point.close.toFixed(2));
+            this_container.select("#o-label").html(data_point.open.toFixed(2));
+            this_container.select("#h-label").html(data_point.high.toFixed(2));
+            this_container.select("#l-label").html(data_point.low.toFixed(2));
+            this_container.select("#c-label").html(data_point.close.toFixed(2));
         }
         updateData(data[data.length-1]);
         
